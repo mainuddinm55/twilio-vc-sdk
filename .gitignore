@@ -25,6 +25,4 @@
 *.aar
 *.ap_
 *.aab
-*.properties
-gradle.properties
 /keystore.properties
