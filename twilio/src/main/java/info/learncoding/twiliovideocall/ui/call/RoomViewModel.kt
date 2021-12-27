@@ -40,7 +40,7 @@ class RoomViewModel constructor(
             is RoomActionEvent.VideoTrackRemoved -> {
                 roomManager.updateParticipantVideoTrack(viewEvent.sid, null)
             }
-            RoomActionEvent.Disconnect -> roomManager.disconnect()
+            is RoomActionEvent.Disconnect -> roomManager.disconnect(viewEvent.isReject)
         }
     }
 

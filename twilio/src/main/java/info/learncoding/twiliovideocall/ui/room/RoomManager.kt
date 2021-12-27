@@ -263,6 +263,7 @@ class RoomManager constructor(
     }
 
     fun setIncoming(callOptions: CallOptions) {
+        this.callOptions = callOptions
         sendCallState(CallState.Incoming(callOptions))
         _isOngoingCall.postValue(true)
         broadcastCallback(TwilioSdk.TYPE_INCOMING)

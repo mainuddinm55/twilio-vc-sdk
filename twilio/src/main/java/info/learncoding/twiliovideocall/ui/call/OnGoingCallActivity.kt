@@ -112,7 +112,7 @@ class OnGoingCallActivity : AppCompatActivity() {
         }
 
         binding.endCallImageView.setOnClickListener {
-            viewModel.processInput(RoomActionEvent.Disconnect)
+            viewModel.processInput(RoomActionEvent.Disconnect(roomManager?.room == null))
         }
 
         binding.videoControllerImageView.setOnClickListener {

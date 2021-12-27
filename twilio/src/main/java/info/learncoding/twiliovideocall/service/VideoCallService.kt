@@ -278,7 +278,7 @@ class VideoCallService : LifecycleService() {
         callOptions?.let { callOptions ->
             startForeground(
                 NOTIFICATION_ID, buildCallNotification(
-                    this, callOptions, false,
+                    this, callOptions, callOptions.userType == UserType.RECEIVER,
                     showTimer = false
                 )
             )
