@@ -156,7 +156,7 @@ object NotificationHelper {
                         .setFullScreenIntent(fullScreenPendingIntent, true)
 
                 val incomingCallNotification = notificationBuilder.build()
-                incomingCallNotification.flags = Notification.FLAG_INSISTENT
+                incomingCallNotification.flags = Notification.FLAG_INSISTENT or Notification.FLAG_ONGOING_EVENT
                 return incomingCallNotification
             } else {
                 return buildOngoingCallNotification(context, false)
