@@ -287,7 +287,7 @@ class VideoCallService : LifecycleService() {
             showNotification(
                 this,
                 NOTIFICATION_ID, buildCallNotification(
-                    this, callOptions, callOptions.userType == UserType.RECEIVER,
+                    this, callOptions, callOptions.userType != UserType.RECEIVER,
                     showTimer = false
                 )
             )
