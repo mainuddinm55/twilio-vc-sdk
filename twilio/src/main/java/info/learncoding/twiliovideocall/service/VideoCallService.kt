@@ -48,6 +48,7 @@ import info.learncoding.twiliovideocall.TwilioSdk
 import info.learncoding.twiliovideocall.TwilioSdk.EXTRA_CALL_OPTIONS
 import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
 import info.learncoding.twiliovideocall.ui.room.*
+import info.learncoding.twiliovideocall.utils.NotificationHelper.buildOngoingCallNotification
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -239,6 +240,12 @@ class VideoCallService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        startForeground(
+            NOTIFICATION_ID, buildOngoingCallNotification(
+                this,
+                showTimer = false
+            )
+        )
         val powerManager = getSystemService(POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,

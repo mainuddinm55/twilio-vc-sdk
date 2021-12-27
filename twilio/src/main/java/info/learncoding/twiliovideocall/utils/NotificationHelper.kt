@@ -28,7 +28,7 @@ object NotificationHelper {
 
     fun buildCallNotification(
         context: Context,
-        callOptions: CallOptions,
+        callOptions: CallOptions?,
         isOngoing: Boolean = false,
         showTimer: Boolean = false
     ): Notification {
@@ -44,18 +44,22 @@ object NotificationHelper {
             .setContentTitle(context.getString(R.string.twilio_ongoing_call_notification_title))
             .setContentText(context.getString(R.string.twilio_room_notification_message))
             .setSound(null)
-            .addAction(
-                R.drawable.twilio_ic_baseline_call_end_24,
-                "End",
-                PendingIntent.getBroadcast(
-                    context, TwilioSdk.REQUEST_CODE_CALL_END,
-                    Intent(context, VideoCallReceiver::class.java).apply {
-                        action = TwilioSdk.ACTION_CALL
-                        putExtra(TwilioSdk.EXTRA_TYPE, TwilioSdk.TYPE_END)
-                    },
-                    getNotificationFlag()
-                )
-            )
+            .apply {
+                if (showTimer) {
+                    addAction(
+                        R.drawable.twilio_ic_baseline_call_end_24,
+                        "End",
+                        PendingIntent.getBroadcast(
+                            context, TwilioSdk.REQUEST_CODE_CALL_END,
+                            Intent(context, VideoCallReceiver::class.java).apply {
+                                action = TwilioSdk.ACTION_CALL
+                                putExtra(TwilioSdk.EXTRA_TYPE, TwilioSdk.TYPE_END)
+                            },
+                            getNotificationFlag()
+                        )
+                    )
+                }
+            }
             .setContentIntent(
                 PendingIntent.getActivity(
                     context,
@@ -78,7 +82,7 @@ object NotificationHelper {
 
     private fun buildIncomingNotification(
         context: Context,
-        callOptions: CallOptions
+        callOptions: CallOptions?
     ): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (isAppBackground(context)) {

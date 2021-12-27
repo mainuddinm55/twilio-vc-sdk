@@ -16,7 +16,7 @@
     <string name="twilio_call_state_reject">Rejected</string>
     <string name="twilio_call_state_ringing">Ringing</string>
 
-    <string name="twilio_ongoing_call_notification_title">Ongoing video call with Maya Expert</string>
+    <string name="twilio_ongoing_call_notification_title">Ongoing Video Call</string>
     <string name="twilio_maya_expert_calling">Maya Expert Calling</string>
 
     <string name="twilio_need_permissions">Need Permissions</string>
