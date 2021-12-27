@@ -49,6 +49,7 @@ import info.learncoding.twiliovideocall.TwilioSdk.EXTRA_CALL_OPTIONS
 import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
 import info.learncoding.twiliovideocall.ui.room.*
 import info.learncoding.twiliovideocall.utils.NotificationHelper.buildOngoingCallNotification
+import info.learncoding.twiliovideocall.utils.NotificationHelper.showNotification
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -251,7 +252,7 @@ class VideoCallService : LifecycleService() {
             PowerManager.PARTIAL_WAKE_LOCK,
             "TwilioSDK:Wakelock"
         )
-        wakeLock?.acquire()
+        wakeLock?.acquire(60000)
 
         roomManagerProvider.createRoomScope(
             RoomManager(
@@ -283,7 +284,8 @@ class VideoCallService : LifecycleService() {
         val callOptionJson = intent?.getStringExtra(EXTRA_CALL_OPTIONS)
         callOptions = Gson().fromJson(callOptionJson, CallOptions::class.java)
         callOptions?.let { callOptions ->
-            startForeground(
+            showNotification(
+                this,
                 NOTIFICATION_ID, buildCallNotification(
                     this, callOptions, callOptions.userType == UserType.RECEIVER,
                     showTimer = false
