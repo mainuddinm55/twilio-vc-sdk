@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="info.learncoding.twiliovideocall">
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application>
+        <activity
+            android:name=".ui.call.OnGoingCallActivity"
+            android:autoRemoveFromRecents="true"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"
+            android:turnScreenOn="true" />
+        <service
+            android:name=".service.VideoCallService"
+            android:exported="false"
+            android:foregroundServiceType="camera|microphone" />
+        <receiver
+            android:name=".receiver.VideoCallReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="ACTION_CALL" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

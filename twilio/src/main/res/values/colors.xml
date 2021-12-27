@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="twilio_black">#FF000000</color>
+    <color name="twilio_white">#FFFFFFFF</color>
+
+    <!-- Login Screen Colors -->
+
+    <!-- RemoteParticipant view colors -->
+    <color name="twilio_participantBackground">#66000000</color>
+    <color name="twilio_participantSelectedBackground">#cc000000</color>
+    <color name="twilio_participantTrackSwitchOff">#80000000</color>
+
+</resources>

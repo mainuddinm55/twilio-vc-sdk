@@ -1,0 +1,26 @@
+<resources>
+    <string name="twilio_primary_profile_picture">Primary view profile picture</string>
+    <string name="twilio_profile_picture">Profile picture</string>
+    <string name="twilio_audio_toggle">Audio toggle</string>
+    <string name="twilio_settings_screen_enable_network_quality_level_description">Network Quality Level</string>
+    <string name="twilio_you">You</string>
+
+    <string name="twilio_local_video_track">Local Video Track</string>
+    <string name="twilio_room_notification_message">Tap to return to the call.</string>
+    <string name="twilio_room_screen_select_device">Select Device</string>
+    <string name="twilio_call_state_incoming">Incoming</string>
+    <string name="twilio_call_state_connecting">Connecting</string>
+    <string name="twilio_call_state_connected">Connected</string>
+    <string name="twilio_call_state_reconnecting">Reconnecting</string>
+    <string name="twilio_call_state_end">Disconnected</string>
+    <string name="twilio_call_state_reject">Rejected</string>
+    <string name="twilio_call_state_ringing">Ringing</string>
+
+    <string name="twilio_ongoing_call_notification_title">Ongoing video call with Maya Expert</string>
+    <string name="twilio_maya_expert_calling">Maya Expert Calling</string>
+
+    <string name="twilio_need_permissions">Need Permissions</string>
+    <string name="twilio_permission_need_desc">You need to enable Camera and Microphone access permissions to use the Video calling feature. Please grant the permissions from App\'s settings and navigate back to the app</string>
+    <string name="twilio_goto_settings">Go To Settings</string>
+
+</resources>

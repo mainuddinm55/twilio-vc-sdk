@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="twilio_ParticipantView">
+        <attr name="twilio_state" format="enum">
+            <enum name="video" value="0" />
+            <enum name="no_video" value="1" />
+        </attr>
+        <attr name="twilio_identity" format="reference" />
+        <attr name="twilio_mirror" format="boolean" />
+        <attr name="twilio_type" format="enum">
+            <enum name="fit" value="0" />
+            <enum name="fill" value="1" />
+            <enum name="balanced" value="2" />
+        </attr>
+        <attr name="twilio_overlaySurface" format="boolean" />
+    </declare-styleable>
+</resources>

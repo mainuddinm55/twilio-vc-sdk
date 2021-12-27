@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/participant_background"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents.NoActionBar">
+
+    <info.learncoding.twiliovideocall.ui.participant.ParticipantThumbView
+        android:id="@+id/primary_video"
+        android:layout_width="120dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:background="@drawable/twilio_gradiant_top_black"
+        android:gravity="end"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/expand_image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="6dp"
+            android:padding="4dp"
+            android:tint="@color/twilio_white"
+            app:layout_constraintEnd_toStartOf="@id/close_image_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/twilio_ic_baseline_open_in_full_24" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/close_image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:padding="4dp"
+            android:tint="@color/twilio_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/twilio_ic_baseline_close_24" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/status_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/twilio_black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/end_call_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Maya Expert Calling.." />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/end_call_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/twilio_red_circle_bg"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/answer_call_image_view"
+        app:srcCompat="@drawable/twilio_ic_baseline_call_end_24" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/answer_call_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/twilio_green_circle_bg"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_call_image_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/twilio_ic_baseline_call_24"
+        tools:visibility="visible" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
