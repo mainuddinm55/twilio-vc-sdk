@@ -16,7 +16,6 @@
 /captures
 .externalNativeBuild
 .cxx
-/gradle
 /app/build
 /release
 /local.properties
@@ -27,6 +26,5 @@
 *.ap_
 *.aab
 *.properties
-/gradle.properties
 gradle.properties
 /keystore.properties
