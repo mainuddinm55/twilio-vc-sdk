@@ -51,12 +51,13 @@ object TwilioSdk {
                 description = "Call Notification"
                 setShowBadge(true)
                 setSound(
+                    null,null/*
                     Uri.parse("android.resource://" + context.packageName + "/" + R.raw.twilio_incoming_ringtone),
                     AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .setLegacyStreamType(AudioManager.STREAM_RING)
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                        .build()
+                        .build()*/
                 )
                 lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             }

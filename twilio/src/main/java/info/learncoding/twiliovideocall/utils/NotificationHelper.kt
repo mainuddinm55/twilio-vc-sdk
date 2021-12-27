@@ -138,7 +138,7 @@ object NotificationHelper {
                         .setContentTitle("Incoming call")
                         .setContentText("Maya Expert Calling")
                         .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setCategory(NotificationCompat.CATEGORY_CALL)
                         .setOngoing(true)
                         .setAutoCancel(true)
