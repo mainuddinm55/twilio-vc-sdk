@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
                     "$baseUrl/$room/$caller",
                     room,
                     caller,
+                    null,
                     caller,
                     UserType.CALLER
                 ),
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                     "$baseUrl/$room/$receiver",
                     room,
                     receiver,
+                    null,
                     receiver,
                     UserType.RECEIVER
                 ),

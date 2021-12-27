@@ -12,6 +12,8 @@ data class CallOptions(
     val roomName: String,
     @SerializedName("remote_user_id")
     val remoteUserId: String,
+    @SerializedName("action_data")
+    val actionData: String?,
     @SerializedName("remote_identity")
     val remoteIdentity: String,
     @SerializedName("user_type")
