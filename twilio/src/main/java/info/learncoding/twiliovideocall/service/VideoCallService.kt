@@ -242,13 +242,6 @@ class VideoCallService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        val powerManager = getSystemService(POWER_SERVICE) as PowerManager
-        wakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK,
-            "TwilioSDK:Wakelock"
-        )
-        wakeLock?.acquire(60000)
-
         roomManagerProvider.createRoomScope(
             RoomManager(
                 this,
@@ -276,6 +269,7 @@ class VideoCallService : LifecycleService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        manageWakeLock()
         val callOptionJson = intent?.getStringExtra(EXTRA_CALL_OPTIONS)
         callOptions = Gson().fromJson(callOptionJson, CallOptions::class.java)
         callOptions?.let { callOptions ->
@@ -509,7 +503,7 @@ class VideoCallService : LifecycleService() {
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
         }
         roomManagerProvider.destroyScope()
-        wakeLock?.release()
+        //wakeLock?.release()
         unregisterCallbackReceiver()
     }
 
@@ -533,6 +527,17 @@ class VideoCallService : LifecycleService() {
         if (registeredVideoCallReceiver) {
             unregisterReceiver(videoCallReceiver)
             registeredVideoCallReceiver = false
+        }
+    }
+
+    private fun manageWakeLock() {
+        val powerManager = getSystemService(POWER_SERVICE) as PowerManager
+        val isScreenOn = powerManager.isInteractive
+        if (!isScreenOn) {
+            wakeLock = powerManager.newWakeLock(
+                PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "TwilioSDK:Wakelock")
+            wakeLock?.acquire(1000L * 60) //60s
         }
     }
 }
