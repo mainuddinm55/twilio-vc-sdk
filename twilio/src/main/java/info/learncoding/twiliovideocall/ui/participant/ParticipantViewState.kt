@@ -20,11 +20,11 @@ data class ParticipantViewState(
         if (!isLocalParticipant) videoTrack?.videoTrack as RemoteVideoTrack? else null
 }
 
-fun buildParticipantViewState(participant: Participant): ParticipantViewState {
+fun buildParticipantViewState(participant: Participant, name: String?): ParticipantViewState {
     val videoTrack = participant.videoTracks.firstOrNull()?.videoTrack
     return ParticipantViewState(
         participant.sid,
-        participant.identity,
+        name ?: participant.identity,
         videoTrack?.let { VideoTrackViewState(it) },
         networkQualityLevel = participant.networkQualityLevel,
         isMuted = participant.audioTracks.firstOrNull() == null

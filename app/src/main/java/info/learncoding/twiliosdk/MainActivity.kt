@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                     room,
                     caller,
                     null,
-                    caller,
+                    "Md Mainuddin",
                     UserType.CALLER
                 ),
                 VideoCallListenerReceiver()
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                     room,
                     receiver,
                     null,
-                    receiver,
+                    "Anup",
                     UserType.RECEIVER
                 ),
                 VideoCallListenerReceiver()

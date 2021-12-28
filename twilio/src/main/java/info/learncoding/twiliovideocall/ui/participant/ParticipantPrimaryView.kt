@@ -11,9 +11,10 @@ internal class ParticipantPrimaryView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ParticipantView(context, attrs, defStyleAttr) {
 
-    private val binding: TwilioParticipantPrimaryViewBinding = TwilioParticipantPrimaryViewBinding.inflate(
-        LayoutInflater.from(context), this, true
-    )
+    private val binding: TwilioParticipantPrimaryViewBinding =
+        TwilioParticipantPrimaryViewBinding.inflate(
+            LayoutInflater.from(context), this, true
+        )
 
     init {
         videoLayout = binding.videoLayout
@@ -22,6 +23,7 @@ internal class ParticipantPrimaryView @JvmOverloads constructor(
         stubImage = binding.stub
         selectedIdentity = binding.selectedIdentity
         networkQualityLevelImg = binding.networkQuality
+        audioToggle = binding.audioToggle
         setIdentity(identity)
         setState(state)
         setMirror(mirror)

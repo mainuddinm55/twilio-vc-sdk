@@ -39,6 +39,7 @@ import info.learncoding.twiliovideocall.ui.participant.PrimaryParticipantControl
 import info.learncoding.twiliovideocall.ui.room.*
 import info.learncoding.twiliovideocall.utils.NotificationHelper.getNotificationFlag
 import info.learncoding.twiliovideocall.TwilioSdk
+import info.learncoding.twiliovideocall.ui.audio.AudioDevicesBottomSheetFragment
 import info.learncoding.twiliovideocall.utils.visibility
 import java.util.*
 import javax.inject.Inject
@@ -311,7 +312,15 @@ class OnGoingCallActivity : AppCompatActivity() {
     }
 
     private fun displayAudioDevices() {
-        viewModel.viewState.value?.let { viewState ->
+        val audioDevicesBottomSheetFragment = AudioDevicesBottomSheetFragment()
+        audioDevicesBottomSheetFragment.deviceSelectedListener = { item: AudioDevice? ->
+            item?.let {
+                viewModel.processInput(RoomActionEvent.SwitchAudioDevice(item))
+            }
+        }
+        audioDevicesBottomSheetFragment.show(supportFragmentManager, "audio_device")
+       /* viewModel.viewState.value?.let { viewState ->
+
             val selectedDevice = viewState.selectedDevice
             val audioDevices = viewState.availableAudioDevices
             if (selectedDevice != null && audioDevices != null) {
@@ -330,7 +339,7 @@ class OnGoingCallActivity : AppCompatActivity() {
                     viewModel.processInput(viewEvent)
                 }.show()
             }
-        }
+        }*/
     }
 
     private fun createAudioDeviceDialog(

@@ -2,7 +2,6 @@ package info.learncoding.twiliovideocall.ui.participant
 
 import android.util.Log
 import com.twilio.video.NetworkQualityLevel
-import com.twilio.video.Participant
 import com.twilio.video.TrackPriority.HIGH
 import info.learncoding.twiliovideocall.ui.room.VideoTrackViewState
 
@@ -130,13 +129,4 @@ class ParticipantManager {
         }
     }
 
-    fun updateParticipants(participants: List<Participant>) {
-        for ((index, participant) in participants.withIndex()) {
-            if (index == 0) { // local participant
-                updateLocalParticipantSid(participant.sid)
-            } else {
-                addParticipant(buildParticipantViewState(participant))
-            }
-        }
-    }
 }

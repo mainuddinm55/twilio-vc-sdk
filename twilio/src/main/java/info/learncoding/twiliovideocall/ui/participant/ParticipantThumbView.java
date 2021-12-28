@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -57,7 +58,7 @@ public class ParticipantThumbView extends ParticipantView {
         super.setState(state);
 
         binding.selectedLayout.setVisibility(isSwitchOffViewVisible(state));
-
+        Log.d(this.getClass().getName(), "setState: " + binding.selectedLayout.getVisibility());
         int resId = R.drawable.twilio_participant_background;
         selectedLayout.setBackground(ContextCompat.getDrawable(getContext(), resId));
     }

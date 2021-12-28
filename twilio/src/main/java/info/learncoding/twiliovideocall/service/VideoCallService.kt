@@ -21,7 +21,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
@@ -32,24 +31,23 @@ import com.twilio.audioswitch.AudioSwitch
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.R
+import info.learncoding.twiliovideocall.TwilioSdk
+import info.learncoding.twiliovideocall.TwilioSdk.EXTRA_CALL_OPTIONS
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.data.model.UserType
 import info.learncoding.twiliovideocall.data.repository.VideoCallRepository
 import info.learncoding.twiliovideocall.databinding.TwilioVideoCallFloatingViewBinding
 import info.learncoding.twiliovideocall.di.RoomEntryPoint
 import info.learncoding.twiliovideocall.di.TwilioSDK
+import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
 import info.learncoding.twiliovideocall.ui.call.OnGoingCallActivity
 import info.learncoding.twiliovideocall.ui.participant.ParticipantManager
 import info.learncoding.twiliovideocall.ui.participant.ParticipantViewState
 import info.learncoding.twiliovideocall.ui.participant.PrimaryParticipantController
-import info.learncoding.twiliovideocall.utils.NotificationHelper
-import info.learncoding.twiliovideocall.utils.NotificationHelper.buildCallNotification
-import info.learncoding.twiliovideocall.utils.NotificationHelper.isAppForeground
-import info.learncoding.twiliovideocall.TwilioSdk
-import info.learncoding.twiliovideocall.TwilioSdk.EXTRA_CALL_OPTIONS
-import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
 import info.learncoding.twiliovideocall.ui.room.*
+import info.learncoding.twiliovideocall.utils.NotificationHelper.buildCallNotification
 import info.learncoding.twiliovideocall.utils.NotificationHelper.buildOngoingCallNotification
+import info.learncoding.twiliovideocall.utils.NotificationHelper.isAppForeground
 import info.learncoding.twiliovideocall.utils.NotificationHelper.showNotification
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -138,10 +136,10 @@ class VideoCallService : LifecycleService() {
                 clearResource()
                 showConnectedViewState()
                 if (!showDurationNotification) {
-                    NotificationHelper.showNotification(
+                    showNotification(
                         this,
                         NOTIFICATION_ID,
-                        NotificationHelper.buildOngoingCallNotification(this, true)
+                        buildOngoingCallNotification(this, true)
                     )
                     showDurationNotification = true
                 }
@@ -150,20 +148,17 @@ class VideoCallService : LifecycleService() {
             is CallState.Connecting -> {
                 if (callOptions?.userType == UserType.CALLER) {
                     startCallingTimer()
+                } else if (callOptions?.userType == UserType.RECEIVER) {
+                    clearResource()
                 }
                 showConnectingViewState()
             }
             is CallState.ConnectionFailed -> {
                 toggleAudioDevice(false)
-                Toast.makeText(this, state.msg, Toast.LENGTH_SHORT).show()
                 stopSelf()
             }
             is CallState.Disconnected -> {
                 toggleAudioDevice(false)
-                Toast.makeText(
-                    this,
-                    getString(R.string.twilio_call_state_end), Toast.LENGTH_SHORT
-                ).show()
                 stopSelf()
             }
             is CallState.Incoming -> {
@@ -298,7 +293,7 @@ class VideoCallService : LifecycleService() {
                     }
                     mediaPlayer = MediaPlayer.create(this, R.raw.twilio_incoming_ringtone).apply {
                         isLooping = true
-                        setVolume(1f,1f)
+                        setVolume(1f, 1f)
                     }
                     roomManager?.setIncoming(callOptions)
                 }
@@ -536,7 +531,8 @@ class VideoCallService : LifecycleService() {
         if (!isScreenOn) {
             wakeLock = powerManager.newWakeLock(
                 PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-                "TwilioSDK:Wakelock")
+                "TwilioSDK:Wakelock"
+            )
             wakeLock?.acquire(1000L * 60) //60s
         }
     }

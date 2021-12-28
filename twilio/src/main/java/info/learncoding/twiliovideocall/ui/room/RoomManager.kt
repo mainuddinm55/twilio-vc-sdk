@@ -374,11 +374,17 @@ class RoomManager constructor(
         }
 
         private fun checkParticipant(participants: List<Participant>) {
+            Log.d(TAG, "checkParticipant: $callOptions")
             for ((index, participant) in participants.withIndex()) {
                 if (index == 0) { // local participant
                     participantManager.updateLocalParticipantSid(participant.sid)
                 } else {
-                    participantManager.addParticipant(buildParticipantViewState(participant))
+                    participantManager.addParticipant(
+                        buildParticipantViewState(
+                            participant,
+                            callOptions?.remoteIdentity
+                        )
+                    )
                 }
             }
             updateParticipantViewState()
