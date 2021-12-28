@@ -94,6 +94,7 @@ class VideoCallService : LifecycleService() {
     private var mediaPlayer: MediaPlayer? = null
     private var countDownTimer: CountDownTimer? = null
     private var ringingTimestamp: Long = 0
+    private var currentAudioLevel = 0
 
     private var callOptions: CallOptions? = null
 
@@ -291,6 +292,7 @@ class VideoCallService : LifecycleService() {
                 UserType.RECEIVER -> {
                     try {
                         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                        currentAudioLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                         val maxIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxIndex, 0)
                     } catch (e: Exception) {
@@ -485,6 +487,7 @@ class VideoCallService : LifecycleService() {
         Log.d(TAG, "clearResource: ")
         mediaPlayer?.stop()
         mediaPlayer?.release()
+        resetAudioLevel()
         countDownTimer?.cancel()
         mediaPlayer = null
         countDownTimer = null
@@ -538,6 +541,15 @@ class VideoCallService : LifecycleService() {
                 PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
                 "TwilioSDK:Wakelock")
             wakeLock?.acquire(1000L * 60) //60s
+        }
+    }
+
+    private fun resetAudioLevel() {
+        try {
+            val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentAudioLevel, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }
