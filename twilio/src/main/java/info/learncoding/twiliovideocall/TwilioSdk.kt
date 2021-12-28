@@ -51,7 +51,7 @@ object TwilioSdk {
                 description = "Call Notification"
                 setShowBadge(true)
                 setSound(
-                    null,null/*
+                    null, null/*
                     Uri.parse("android.resource://" + context.packageName + "/" + R.raw.twilio_incoming_ringtone),
                     AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -59,6 +59,10 @@ object TwilioSdk {
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                         .build()*/
                 )
+                enableVibration(true)
+                enableLights(true)
+                setBypassDnd(true)
+                vibrationPattern = longArrayOf(1000, 1000, 1000, 1000)
                 lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             }
             val silentChannel = NotificationChannel(
@@ -68,6 +72,10 @@ object TwilioSdk {
             ).apply {
                 description = "Call Notification"
                 setShowBadge(true)
+                enableVibration(true)
+                enableLights(true)
+                setBypassDnd(true)
+                vibrationPattern = longArrayOf(1000, 1000, 1000, 1000)
                 lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
             }
 
