@@ -32,6 +32,7 @@ class NotificationService : FirebaseMessagingService() {
                         remoteUserId ?: "",
                         data["schedule_id"],
                         remoteUserId ?: "",
+                        emptyList(),
                         UserType.RECEIVER
                     ),
                     VideoCallListenerReceiver()

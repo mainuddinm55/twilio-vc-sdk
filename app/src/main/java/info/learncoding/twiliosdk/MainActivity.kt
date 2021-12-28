@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                     caller,
                     null,
                     "Md Mainuddin",
+                    listOf("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/440px-Image_created_with_a_mobile_phone.png"),
                     UserType.CALLER
                 ),
                 VideoCallListenerReceiver()
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     receiver,
                     null,
                     "Anup",
+                    emptyList(),
                     UserType.RECEIVER
                 ),
                 VideoCallListenerReceiver()

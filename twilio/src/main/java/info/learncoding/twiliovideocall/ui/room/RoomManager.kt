@@ -21,7 +21,6 @@ import info.learncoding.twiliovideocall.data.repository.VideoCallRepository
 import info.learncoding.twiliovideocall.service.VideoCallService.Companion.stopService
 import info.learncoding.twiliovideocall.ui.participant.*
 import info.learncoding.twiliovideocall.TwilioSdk
-import io.uniflow.android.consumerId
 import kotlinx.coroutines.*
 import java.lang.Runnable
 

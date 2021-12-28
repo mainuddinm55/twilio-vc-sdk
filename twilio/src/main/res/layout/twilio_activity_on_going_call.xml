@@ -12,9 +12,9 @@
         layout="@layout/twilio_content_video" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/controller_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/controller_layout"
         android:layout_gravity="bottom"
         android:background="@drawable/twilio_gradiant"
         android:paddingStart="16dp"
@@ -66,11 +66,11 @@
             android:background="@drawable/twilio_red_circle_bg"
             android:padding="10dp"
             android:visibility="gone"
-            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/answer_call_image_view"
-            app:srcCompat="@drawable/twilio_ic_baseline_call_end_24" />
+            app:srcCompat="@drawable/twilio_ic_baseline_call_end_24"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/answer_call_image_view"
@@ -122,10 +122,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/audio_device_controller_image_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="50dp"
-        android:id="@+id/audio_device_controller_image_view"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/twilio_transparent_rounded_bg"
@@ -135,4 +135,17 @@
         app:srcCompat="@drawable/twilio_ic_volume_up_white_24dp"
         app:tint="@color/twilio_white" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/attachment_image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/twilio_transparent_rounded_bg"
+        android:padding="5dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/twilio_ic_baseline_attach_file_24"
+        app:tint="@color/twilio_white"
+        tools:visibility="visible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

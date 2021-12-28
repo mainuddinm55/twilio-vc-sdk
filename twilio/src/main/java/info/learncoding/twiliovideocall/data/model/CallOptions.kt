@@ -16,6 +16,8 @@ data class CallOptions(
     val actionData: String?,
     @SerializedName("remote_identity")
     val remoteIdentity: String,
+    @SerializedName("attachment")
+    val attachments: List<String>?,
     @SerializedName("user_type")
     val userType: UserType
 ) : Parcelable

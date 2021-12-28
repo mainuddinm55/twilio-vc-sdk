@@ -2,7 +2,6 @@ package info.learncoding.twiliovideocall.ui.room
 
 import com.twilio.audioswitch.AudioDevice
 import info.learncoding.twiliovideocall.ui.participant.ParticipantViewState
-import io.uniflow.core.flow.data.UIState
 
 data class RoomViewState(
     val primaryParticipant: ParticipantViewState,

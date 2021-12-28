@@ -39,6 +39,7 @@ import info.learncoding.twiliovideocall.ui.participant.PrimaryParticipantControl
 import info.learncoding.twiliovideocall.ui.room.*
 import info.learncoding.twiliovideocall.utils.NotificationHelper.getNotificationFlag
 import info.learncoding.twiliovideocall.TwilioSdk
+import info.learncoding.twiliovideocall.ui.attachment.AttachmentActivity
 import info.learncoding.twiliovideocall.ui.audio.AudioDevicesBottomSheetFragment
 import info.learncoding.twiliovideocall.utils.visibility
 import java.util.*
@@ -126,6 +127,9 @@ class OnGoingCallActivity : AppCompatActivity() {
         }
         binding.audioDeviceControllerImageView.setOnClickListener {
             displayAudioDevices()
+        }
+        binding.attachmentImageView.setOnClickListener {
+            showAttachment()
         }
 
         savedVolumeControlStream = volumeControlStream
@@ -319,27 +323,27 @@ class OnGoingCallActivity : AppCompatActivity() {
             }
         }
         audioDevicesBottomSheetFragment.show(supportFragmentManager, "audio_device")
-       /* viewModel.viewState.value?.let { viewState ->
+        /* viewModel.viewState.value?.let { viewState ->
 
-            val selectedDevice = viewState.selectedDevice
-            val audioDevices = viewState.availableAudioDevices
-            if (selectedDevice != null && audioDevices != null) {
-                val index = audioDevices.indexOf(selectedDevice)
-                val audioDeviceNames = ArrayList<String>()
-                for (a in audioDevices) {
-                    audioDeviceNames.add(a.name)
-                }
-                createAudioDeviceDialog(
-                    this,
-                    index,
-                    audioDeviceNames
-                ) { dialogInterface: DialogInterface, i: Int ->
-                    dialogInterface.dismiss()
-                    val viewEvent = RoomActionEvent.SwitchAudioDevice(audioDevices[i])
-                    viewModel.processInput(viewEvent)
-                }.show()
-            }
-        }*/
+             val selectedDevice = viewState.selectedDevice
+             val audioDevices = viewState.availableAudioDevices
+             if (selectedDevice != null && audioDevices != null) {
+                 val index = audioDevices.indexOf(selectedDevice)
+                 val audioDeviceNames = ArrayList<String>()
+                 for (a in audioDevices) {
+                     audioDeviceNames.add(a.name)
+                 }
+                 createAudioDeviceDialog(
+                     this,
+                     index,
+                     audioDeviceNames
+                 ) { dialogInterface: DialogInterface, i: Int ->
+                     dialogInterface.dismiss()
+                     val viewEvent = RoomActionEvent.SwitchAudioDevice(audioDevices[i])
+                     viewModel.processInput(viewEvent)
+                 }.show()
+             }
+         }*/
     }
 
     private fun createAudioDeviceDialog(
@@ -369,6 +373,7 @@ class OnGoingCallActivity : AppCompatActivity() {
         Log.d(TAG, "bindRoomViewState: $roomViewState")
         updateLayout(roomViewState)
         updateAudioDeviceIcon(roomViewState.selectedDevice)
+        updateAttachmentIconVisibility()
     }
 
     private fun renderPrimaryView(primaryParticipant: ParticipantViewState) {
@@ -413,6 +418,28 @@ class OnGoingCallActivity : AppCompatActivity() {
             else -> R.drawable.twilio_ic_phonelink_ring_white_24dp
         }
         binding.audioDeviceControllerImageView.setImageResource(audioDeviceMenuIcon)
+    }
+
+    private fun updateAttachmentIconVisibility() {
+        if (callOptions?.attachments.isNullOrEmpty()) {
+            binding.attachmentImageView.visibility(isVisible = false)
+        } else {
+            binding.attachmentImageView.visibility(isVisible = true)
+        }
+    }
+
+    private fun showAttachment() {
+        if (callOptions?.attachments.isNullOrEmpty()) {
+            Toast.makeText(this, "No attachment", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val images: ArrayList<String> = callOptions?.attachments?.map {
+            return@map it
+        } as ArrayList<String>
+
+        AttachmentActivity.buildIntent(this, images).also {
+            startActivity(it)
+        }
     }
 
     private fun bindCallState(callState: CallState) {

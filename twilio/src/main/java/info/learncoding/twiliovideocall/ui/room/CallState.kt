@@ -2,7 +2,6 @@ package info.learncoding.twiliovideocall.ui.room
 
 import com.twilio.video.Room
 import info.learncoding.twiliovideocall.data.model.CallOptions
-import io.uniflow.core.flow.data.UIEvent
 
 sealed class CallState(val options: CallOptions?) {
     object Lobby : CallState(null)
