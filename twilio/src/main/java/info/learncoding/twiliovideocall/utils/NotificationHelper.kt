@@ -10,6 +10,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import com.google.gson.Gson
 import info.learncoding.twiliovideocall.R
 import info.learncoding.twiliovideocall.TwilioSdk.INCOMING_NOTIFICATION_CHANNEL_ID
@@ -87,8 +88,8 @@ object NotificationHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (isAppBackground(context)) {
                 val fullScreenIntent = Intent(context, OnGoingCallActivity::class.java)
-                fullScreenIntent.flags = Intent.FLAG_ACTIVITY_NO_USER_ACTION or
-                        Intent.FLAG_ACTIVITY_NEW_TASK
+//                fullScreenIntent.flags = Intent.FLAG_ACTIVITY_NO_USER_ACTION or
+//                        Intent.FLAG_ACTIVITY_NEW_TASK
                 val fullScreenPendingIntent = PendingIntent.getActivity(
                     context,
                     3,
@@ -137,11 +138,13 @@ object NotificationHelper {
                     ).setSmallIcon(R.drawable.twilio_ic_videocam_black_24dp)
                         .setContentTitle("Incoming call")
                         .setContentText("Maya Expert Calling")
+                        .setContentIntent(fullScreenPendingIntent)
                         .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setCategory(NotificationCompat.CATEGORY_CALL)
                         .setOngoing(true)
                         .setAutoCancel(true)
+                        .setVisibility(VISIBILITY_PUBLIC)
                         .setSound(Uri.parse("android.resource://" + context.packageName + "/" + R.raw.twilio_incoming_ringtone))
                         .addAction(
                             R.drawable.twilio_ic_baseline_call_24,
@@ -156,7 +159,8 @@ object NotificationHelper {
                         .setFullScreenIntent(fullScreenPendingIntent, true)
 
                 val incomingCallNotification = notificationBuilder.build()
-                incomingCallNotification.flags = Notification.FLAG_INSISTENT or Notification.FLAG_ONGOING_EVENT
+                incomingCallNotification.flags =
+                    Notification.FLAG_INSISTENT or Notification.FLAG_ONGOING_EVENT
                 return incomingCallNotification
             } else {
                 return buildOngoingCallNotification(context, false)

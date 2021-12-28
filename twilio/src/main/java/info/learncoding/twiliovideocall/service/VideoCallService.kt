@@ -242,12 +242,6 @@ class VideoCallService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(
-            NOTIFICATION_ID, buildOngoingCallNotification(
-                this,
-                showTimer = false
-            )
-        )
         val powerManager = getSystemService(POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
@@ -285,8 +279,7 @@ class VideoCallService : LifecycleService() {
         val callOptionJson = intent?.getStringExtra(EXTRA_CALL_OPTIONS)
         callOptions = Gson().fromJson(callOptionJson, CallOptions::class.java)
         callOptions?.let { callOptions ->
-            showNotification(
-                this,
+            startForeground(
                 NOTIFICATION_ID, buildCallNotification(
                     this, callOptions, callOptions.userType != UserType.RECEIVER,
                     showTimer = false

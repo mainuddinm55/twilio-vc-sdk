@@ -34,8 +34,8 @@ object TwilioSdk {
     const val TYPE_RECONNECTING = "RECONNECTING"
     const val TYPE_RECONNECTED = "RECONNECTED"
 
-    const val INCOMING_NOTIFICATION_CHANNEL_ID = "Incoming Calls"
-    const val ONGOING_NOTIFICATION_CHANNEL_ID = "Ongoing Calls"
+    const val INCOMING_NOTIFICATION_CHANNEL_ID = "Incoming Call"
+    const val ONGOING_NOTIFICATION_CHANNEL_ID = "Ongoing Call"
 
     fun initSdk(context: Context) {
         createNotificationChannel(context)
