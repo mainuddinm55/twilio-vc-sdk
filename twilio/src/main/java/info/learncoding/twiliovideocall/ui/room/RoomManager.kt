@@ -115,6 +115,7 @@ class RoomManager constructor(
             TwilioSdk.TYPE_END
         }
         broadcastCallback(type)
+        _duration.postValue(0L)
     }
 
     suspend fun connect(callOptions: CallOptions) {
