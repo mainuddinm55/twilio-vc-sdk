@@ -1,12 +1,13 @@
 package info.learncoding.twiliosdk
 
 import android.util.Log
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
+//import com.google.firebase.messaging.FirebaseMessagingService
+//import com.google.firebase.messaging.RemoteMessage
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.data.model.UserType
 import info.learncoding.twiliovideocall.service.VideoCallService
 
+/*
 class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(this::class.java.name, "onMessageReceived: ${remoteMessage.data}")
@@ -42,4 +43,4 @@ class NotificationService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         Log.d(this::class.java.name, "onNewToken: $token")
     }
-}
+}*/

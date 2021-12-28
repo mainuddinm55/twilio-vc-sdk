@@ -3,10 +3,10 @@ package info.learncoding.twiliosdk
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.GoogleApiAvailabilityLight
+//import com.google.android.gms.common.GoogleApiAvailabilityLight
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
+//import com.google.firebase.messaging.FirebaseMessaging
+//import com.google.firebase.messaging.FirebaseMessagingService
 import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.data.model.UserType
@@ -52,9 +52,9 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+        /*FirebaseMessaging.getInstance().token.addOnSuccessListener {
             Log.d(this::class.java.name, "onCreate FcmToken: $it")
-        }
+        }*/
 
     }
 
