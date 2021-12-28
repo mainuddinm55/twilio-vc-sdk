@@ -56,9 +56,6 @@ public class ParticipantThumbView extends ParticipantView {
     @Override
     public void setState(int state) {
         super.setState(state);
-
-        binding.selectedLayout.setVisibility(isSwitchOffViewVisible(state));
-        Log.d(this.getClass().getName(), "setState: " + binding.selectedLayout.getVisibility());
         int resId = R.drawable.twilio_participant_background;
         selectedLayout.setBackground(ContextCompat.getDrawable(getContext(), resId));
     }
