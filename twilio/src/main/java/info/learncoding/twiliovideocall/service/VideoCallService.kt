@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.PixelFormat
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.CountDownTimer
@@ -301,8 +302,16 @@ class VideoCallService : LifecycleService() {
                     }
                 }
                 UserType.RECEIVER -> {
+                    try {
+                        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                        val maxIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxIndex, 0)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     mediaPlayer = MediaPlayer.create(this, R.raw.twilio_incoming_ringtone).apply {
                         isLooping = true
+                        setVolume(1f,1f)
                     }
                     roomManager?.setIncoming(callOptions)
                 }
