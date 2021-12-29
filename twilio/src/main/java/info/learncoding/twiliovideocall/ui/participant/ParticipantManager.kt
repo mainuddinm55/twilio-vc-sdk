@@ -32,9 +32,10 @@ class ParticipantManager {
         updatePrimaryParticipant()
     }
 
-    fun updateLocalParticipantVideoTrack(videoTrack: VideoTrackViewState?) =
+    fun updateLocalParticipantVideoTrack(videoTrack: VideoTrackViewState?, isFrontCamera: Boolean) =
         mutableParticipants.find { it.isLocalParticipant }?.copy(
-            videoTrack = videoTrack
+            videoTrack = videoTrack,
+            isMirrored = isFrontCamera
         )?.let { updateLocalParticipant(it) }
 
     fun updateLocalParticipantSid(sid: String) =

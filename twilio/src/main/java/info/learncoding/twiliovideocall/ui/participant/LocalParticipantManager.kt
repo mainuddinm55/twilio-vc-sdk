@@ -23,7 +23,7 @@ class LocalParticipantManager(
     private var cameraVideoTrack: LocalVideoTrack? = null
         set(value) {
             field = value
-            roomManager.updateLocalVideoTrack(value)
+            roomManager.updateLocalVideoTrack(value, cameraCapturer?.isFrontCamera() == true)
         }
     private var cameraCapturer: CameraCapturerCompat? = null
 

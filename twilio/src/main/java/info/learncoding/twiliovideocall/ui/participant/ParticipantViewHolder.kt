@@ -13,6 +13,7 @@ import com.twilio.video.NetworkQualityLevel.NETWORK_QUALITY_LEVEL_TWO
 import com.twilio.video.NetworkQualityLevel.NETWORK_QUALITY_LEVEL_ZERO
 import com.twilio.video.VideoTrack
 import info.learncoding.twiliovideocall.R
+import info.learncoding.twiliovideocall.ui.room.CameraCapturerCompat
 import info.learncoding.twiliovideocall.ui.room.VideoTrackViewState
 
 private const val TAG = "ParticipantViewHolder"

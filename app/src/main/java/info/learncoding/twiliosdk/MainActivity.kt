@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.data.model.UserType
 import info.learncoding.twiliovideocall.service.VideoCallService
+import info.learncoding.twiliovideocall.ui.call.OnGoingCallActivity
 import info.learncoding.twiliovideocall.ui.participant.ParticipantViewState
 import info.learncoding.twiliovideocall.ui.room.CallState
 import info.learncoding.twiliovideocall.ui.room.RoomViewState
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             primaryParticipant = ParticipantViewState(isLocalParticipant = true),
             participantThumbnails = listOf(ParticipantViewState()),
 
-        )
+            )
         Log.d(TAG, "onCreate: ${state.serializeToMap()}")
     }
 

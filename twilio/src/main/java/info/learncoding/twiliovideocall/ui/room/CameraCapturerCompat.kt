@@ -45,6 +45,10 @@ class CameraCapturerCompat(
         )
     }
 
+    fun isFrontCamera(): Boolean {
+        return cameraId == frontCameraId
+    }
+
     override fun stopCapture() {
         cameraCapturer?.stopCapture() ?: camera2Capturer?.stopCapture()
     }
@@ -111,14 +115,13 @@ class CameraCapturerCompat(
                     context,
                     it
                 )
-            } to
-                    deviceNames.find {
-                        isBackFacing(it) && isCameraIdSupported(
-                            isCamera2,
-                            context,
-                            it
-                        )
-                    }
+            } to deviceNames.find {
+                isBackFacing(it) && isCameraIdSupported(
+                    isCamera2,
+                    context,
+                    it
+                )
+            }
             return if (isAtLeastOneCameraAvailable(cameraIds.first, cameraIds.second)) cameraIds
             else {
                 Log.w("CameraCapturerCompat", "No cameras are available on this device")

@@ -10,7 +10,6 @@ import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.twilio.audioswitch.AudioDevice
 import com.twilio.audioswitch.AudioSwitch
 import com.twilio.video.*
@@ -174,9 +173,9 @@ class RoomManager constructor(
         }
     }
 
-    fun updateLocalVideoTrack(videoTrack: LocalVideoTrack?) {
+    fun updateLocalVideoTrack(videoTrack: LocalVideoTrack?, isFrontCamera: Boolean) {
         participantManager.updateLocalParticipantVideoTrack(
-            videoTrack?.let { VideoTrackViewState(it) }
+            videoTrack?.let { VideoTrackViewState(it) }, isFrontCamera
         )
         updateParticipantViewState()
         updateRoomViewState(initialViewState.copy(isVideoOff = videoTrack == null))
