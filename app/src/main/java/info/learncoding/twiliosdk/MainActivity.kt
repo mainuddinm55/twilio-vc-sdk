@@ -11,6 +11,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.data.model.UserType
 import info.learncoding.twiliovideocall.service.VideoCallService
+import info.learncoding.twiliovideocall.ui.participant.ParticipantViewState
+import info.learncoding.twiliovideocall.ui.room.CallState
+import info.learncoding.twiliovideocall.ui.room.RoomViewState
+import info.learncoding.twiliovideocall.utils.serializeToMap
+
+private const val TAG = "MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -58,6 +64,16 @@ class MainActivity : AppCompatActivity() {
             Log.d(this::class.java.name, "onCreate FcmToken: $it")
         }*/
 
+
+        val callState = CallState.Lobby
+        Log.d(TAG, "onCreate: ${callState.javaClass.simpleName}")
+
+        val state = RoomViewState(
+            primaryParticipant = ParticipantViewState(isLocalParticipant = true),
+            participantThumbnails = listOf(ParticipantViewState()),
+
+        )
+        Log.d(TAG, "onCreate: ${state.serializeToMap()}")
     }
 
 

@@ -10,6 +10,7 @@ import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.twilio.audioswitch.AudioDevice
 import com.twilio.audioswitch.AudioSwitch
 import com.twilio.video.*
@@ -21,8 +22,12 @@ import info.learncoding.twiliovideocall.data.repository.VideoCallRepository
 import info.learncoding.twiliovideocall.service.VideoCallService.Companion.stopService
 import info.learncoding.twiliovideocall.ui.participant.*
 import info.learncoding.twiliovideocall.TwilioSdk
+import info.learncoding.twiliovideocall.data.model.UserType
+import info.learncoding.twiliovideocall.utils.serializeToMap
 import kotlinx.coroutines.*
 import java.lang.Runnable
+import java.util.*
+import kotlin.collections.HashMap
 
 const val MICROPHONE_TRACK_NAME = "microphone"
 const val CAMERA_TRACK_NAME = "camera"
@@ -115,6 +120,23 @@ class RoomManager constructor(
         }
         broadcastCallback(type)
         _duration.postValue(0L)
+
+        if (isReject && !isMissedCall) {
+            broadcastCallingData(
+                TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+                hashMapOf(Pair("action", "reject call"))
+            )
+        } else if (!isReject && isMissedCall) {
+            broadcastCallingData(
+                TwilioSdk.KEY_VIDEO_CALL_MISSED_CALL,
+                hashMapOf(Pair("action", "missed call"))
+            )
+        } else {
+            broadcastCallingData(
+                TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+                hashMapOf(Pair("action", "end call clicked"))
+            )
+        }
     }
 
     suspend fun connect(callOptions: CallOptions) {
@@ -123,6 +145,13 @@ class RoomManager constructor(
         broadcastCallback(TwilioSdk.TYPE_CONNECTING)
         connectToRoom(callOptions.tokenUrl, callOptions.roomName)
         _isOngoingCall.postValue(true)
+
+        if (callOptions.userType == UserType.RECEIVER) {
+            broadcastCallingData(
+                TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+                hashMapOf(Pair("action", "answered call"))
+            )
+        }
     }
 
     private suspend fun connectToRoom(url: String, roomName: String) {
@@ -170,6 +199,7 @@ class RoomManager constructor(
             sid, networkQualityLevel
         )
         updateParticipantViewState()
+        broadcastNetworkLevel(networkQualityLevel)
     }
 
     fun updateParticipantAudioTrack(sid: String, mute: Boolean) {
@@ -205,13 +235,27 @@ class RoomManager constructor(
 
     fun toggleLocalVideo() {
         localParticipantManager.toggleLocalVideo()
+        broadcastCallingData(
+            TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+            hashMapOf(Pair("action", "click on switch video"))
+        )
     }
 
     fun toggleLocalAudio() {
         localParticipantManager.toggleLocalAudio()
+        broadcastCallingData(
+            TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+            hashMapOf(Pair("action", "click on switch audio"))
+        )
     }
 
-    fun switchCamera() = localParticipantManager.switchCamera()
+    fun switchCamera() {
+        localParticipantManager.switchCamera()
+        broadcastCallingData(
+            TwilioSdk.KEY_VIDEO_CALL_BUTTON_STATE,
+            hashMapOf(Pair("action", "click on switch camera"))
+        )
+    }
 
     fun audioActivate() {
         audioSwitch.activate()
@@ -274,6 +318,17 @@ class RoomManager constructor(
             Log.i(TAG, "onConnected -> room sid: " + room.sid)
             setupParticipants(room)
             this@RoomManager.room = room
+
+            hashMapOf<String, String>().apply {
+                put("room", room.name)
+                if (callOptions?.userType == UserType.RECEIVER) {
+                    put("receiving_time", System.currentTimeMillis().toString())
+                    broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_RECEIVING_TIME, this)
+                } else if (callOptions?.userType == UserType.CALLER) {
+                    put("calling_time", System.currentTimeMillis().toString())
+                    broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_CALLING_TIME, this)
+                }
+            }
         }
 
         override fun onDisconnected(room: Room, twilioException: TwilioException?) {
@@ -286,7 +341,13 @@ class RoomManager constructor(
             sendCallState(CallState.Disconnected(false))
 
             localParticipantManager.localParticipant = null
-
+            if (twilioException != null) {
+                val exceptionInfo = hashMapOf<String, String>()
+                exceptionInfo["code"] = twilioException.code.toString()
+                exceptionInfo["message"] = twilioException.explanation.toString()
+                exceptionInfo["method"] = "onDisconnected"
+                broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
+            }
         }
 
         override fun onConnectFailure(room: Room, twilioException: TwilioException) {
@@ -300,6 +361,11 @@ class RoomManager constructor(
                 )
             )
             broadcastCallback(TwilioSdk.TYPE_FAILED, twilioException.explanation)
+            val exceptionInfo = hashMapOf<String, String>()
+            exceptionInfo["code"] = twilioException.code.toString()
+            exceptionInfo["message"] = twilioException.explanation.toString()
+            exceptionInfo["method"] = "onConnectFailure"
+            broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
         }
 
         override fun onParticipantConnected(room: Room, remoteParticipant: RemoteParticipant) {
@@ -328,6 +394,12 @@ class RoomManager constructor(
                 TAG,
                 "DominantSpeakerChanged -> room sid: ${room.sid}, remoteParticipant: ${remoteParticipant?.sid}"
             )
+            hashMapOf<String, String>().apply {
+                put("speaker", remoteParticipant?.identity ?: "")
+                put("room", room.name)
+            }.also {
+                broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_DOMINANT_SPEAKER, it)
+            }
         }
 
         override fun onRecordingStarted(room: Room) {
@@ -348,7 +420,17 @@ class RoomManager constructor(
             Log.i(TAG, "onReconnecting: " + room.name)
             sendCallState(CallState.Reconnecting(callOptions))
             broadcastCallback(TwilioSdk.TYPE_RECONNECTING)
+            val dropInfo = hashMapOf<String, String>()
+            dropInfo["is_drop"] = "true"
+            dropInfo["message"] = twilioException.explanation.toString()
+            dropInfo["code"] = twilioException.getCode().toString()
+            broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_DROP, dropInfo)
 
+            val exceptionInfo = hashMapOf<String, String>()
+            exceptionInfo["code"] = twilioException.code.toString()
+            exceptionInfo["message"] = twilioException.explanation.toString()
+            exceptionInfo["method"] = "onReconnecting"
+            broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
         }
 
         private fun setupParticipants(room: Room) {
@@ -411,6 +493,72 @@ class RoomManager constructor(
             putExtra(TwilioSdk.EXTRA_CALL_OPTIONS, Gson().toJson(callOptions))
         }.also {
             context.sendBroadcast(it)
+        }
+    }
+
+    private fun broadcastNetworkLevel(networkQualityLevel: NetworkQualityLevel) {
+        val networkQuality: Int
+        val networkLevel: String
+        when (networkQualityLevel) {
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_ZERO -> {
+                networkLevel = "failed"
+                networkQuality = 0
+            }
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_ONE -> {
+                networkLevel = "Very Bad"
+                networkQuality = 1
+            }
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_TWO -> {
+                networkLevel = "Bad"
+                networkQuality = 2
+            }
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_THREE -> {
+                networkLevel = "Good"
+                networkQuality = 3
+            }
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_FOUR -> {
+                networkLevel = "Very Good"
+                networkQuality = 4
+            }
+            NetworkQualityLevel.NETWORK_QUALITY_LEVEL_FIVE -> {
+                networkLevel = "Excellent"
+                networkQuality = 5
+            }
+            else -> {
+                networkLevel = "Unknown"
+                networkQuality = -1
+            }
+        }
+        val qualityInfo = hashMapOf<String, String>()
+        qualityInfo["quality"] = networkQuality.toString()
+        qualityInfo["label"] = networkLevel
+        qualityInfo["network"] = TwilioSdk.networkType(context)
+        broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_NETWORK_QUALITY, qualityInfo)
+
+    }
+
+    private fun broadcastCallingData(key: String, data: HashMap<String, String>) {
+        try {
+            data["timestamp"] = System.currentTimeMillis().toString()
+            data["data"] = Date().toString()
+            data["calling_state"] = callState.value?.javaClass?.simpleName?.toString() ?: ""
+            Log.d(TAG, "broadcastCallingData: $data")
+            Intent(TwilioSdk.ACTION_CALL_DATA).apply {
+                putExtra(TwilioSdk.EXTRA_CALL_DATA_KEY, key)
+                data.entries.forEach { entry ->
+                    putExtra(entry.key, entry.value)
+                }
+                callOptions?.serializeToMap()?.forEach {
+                    putExtra(it.key, it.value.toString())
+                }
+                initialViewState.serializeToMap().forEach {
+                    putExtra(it.key, it.value.toString())
+                }
+                putExtra(TwilioSdk.EXTRA_CALL_OPTIONS, Gson().toJson(callOptions))
+            }.also {
+                context.sendBroadcast(it)
+            }
+        } catch (e: Exception) {
         }
     }
 }

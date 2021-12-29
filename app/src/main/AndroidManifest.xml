@@ -28,6 +28,9 @@
             <intent-filter>
                 <action android:name="ACTION_VIDEO_CALL_CALLBACK" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="ACTION_CALL_DATA" />
+            </intent-filter>
         </receiver>
 
         <!--<service
