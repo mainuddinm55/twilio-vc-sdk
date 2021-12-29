@@ -508,7 +508,9 @@ class VideoCallService : LifecycleService() {
     private fun registerCallbackReceiver() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             callbackReceiver?.let {
-                registerReceiver(it, IntentFilter(TwilioSdk.ACTION_CALLBACK))
+                val intentFilter = IntentFilter(TwilioSdk.ACTION_CALLBACK)
+                intentFilter.addAction(TwilioSdk.ACTION_CALL_DATA)
+                registerReceiver(it, intentFilter)
                 registeredCallbackReceiver = true
             }
 
