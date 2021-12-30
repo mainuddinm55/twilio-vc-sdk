@@ -277,8 +277,17 @@ class VideoCallService : LifecycleService() {
             )
             when (callOptions.userType) {
                 UserType.CALLER -> {
+                    try {
+                        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                        currentAudioLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                        val maxIndex = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxIndex, 0)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     mediaPlayer = MediaPlayer.create(this, R.raw.twilio_outgoing_ringtone).apply {
                         isLooping = true
+                        setVolume(1f, 1f)
                     }
                     lifecycleScope.launch {
                         roomManager?.connect(callOptions)
