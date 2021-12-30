@@ -261,7 +261,6 @@ class VideoCallService : LifecycleService() {
         setLayoutParams()
         drawMovementOfWidget()
         widgetClickListener()
-        registerCallbackReceiver()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -316,6 +315,7 @@ class VideoCallService : LifecycleService() {
         roomManager?.isUiOnService?.observe(this, isUiOnServiceObserver)
         roomManager?.callState?.observe(this, uiStateObserver)
         roomManager?.viewState?.observe(this, viewStateObserver)
+        registerCallbackReceiver()
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -529,13 +529,17 @@ class VideoCallService : LifecycleService() {
     }
 
     private fun unregisterCallbackReceiver() {
-        if (registeredCallbackReceiver) {
-            unregisterReceiver(callbackReceiver)
-            registeredCallbackReceiver = false
-        }
-        if (registeredVideoCallReceiver) {
-            unregisterReceiver(videoCallReceiver)
-            registeredVideoCallReceiver = false
+        try {
+            if (registeredCallbackReceiver) {
+                unregisterReceiver(callbackReceiver)
+                registeredCallbackReceiver = false
+            }
+            if (registeredVideoCallReceiver) {
+                unregisterReceiver(videoCallReceiver)
+                registeredVideoCallReceiver = false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
