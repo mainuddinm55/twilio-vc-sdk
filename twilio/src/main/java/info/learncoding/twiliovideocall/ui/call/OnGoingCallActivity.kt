@@ -323,43 +323,6 @@ class OnGoingCallActivity : AppCompatActivity() {
             }
         }
         audioDevicesBottomSheetFragment.show(supportFragmentManager, "audio_device")
-        /* viewModel.viewState.value?.let { viewState ->
-
-             val selectedDevice = viewState.selectedDevice
-             val audioDevices = viewState.availableAudioDevices
-             if (selectedDevice != null && audioDevices != null) {
-                 val index = audioDevices.indexOf(selectedDevice)
-                 val audioDeviceNames = ArrayList<String>()
-                 for (a in audioDevices) {
-                     audioDeviceNames.add(a.name)
-                 }
-                 createAudioDeviceDialog(
-                     this,
-                     index,
-                     audioDeviceNames
-                 ) { dialogInterface: DialogInterface, i: Int ->
-                     dialogInterface.dismiss()
-                     val viewEvent = RoomActionEvent.SwitchAudioDevice(audioDevices[i])
-                     viewModel.processInput(viewEvent)
-                 }.show()
-             }
-         }*/
-    }
-
-    private fun createAudioDeviceDialog(
-        activity: Activity,
-        currentDevice: Int,
-        availableDevices: ArrayList<String>,
-        audioDeviceClickListener: DialogInterface.OnClickListener
-    ): AlertDialog {
-        val builder = AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
-        builder.setTitle(activity.getString(R.string.twilio_room_screen_select_device))
-        builder.setSingleChoiceItems(
-            availableDevices.toTypedArray<CharSequence>(),
-            currentDevice,
-            audioDeviceClickListener
-        )
-        return builder.create()
     }
 
     private fun bindRoomViewState(roomViewState: RoomViewState) {
