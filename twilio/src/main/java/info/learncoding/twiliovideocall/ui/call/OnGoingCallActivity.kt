@@ -382,7 +382,7 @@ class OnGoingCallActivity : AppCompatActivity() {
                 if (isLocalParticipant) getString(R.string.twilio_you) else identity,
                 videoTrack,
                 isMuted,
-                !isLocalParticipant,
+                isMirrored,
                 networkQualityLevel
             )
         }
