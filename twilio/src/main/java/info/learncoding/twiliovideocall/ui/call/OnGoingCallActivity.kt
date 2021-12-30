@@ -387,7 +387,7 @@ class OnGoingCallActivity : AppCompatActivity() {
         if (callOptions?.attachments.isNullOrEmpty()) {
             binding.attachmentImageView.visibility(isVisible = false)
         } else {
-            binding.attachmentImageView.visibility(isVisible = true)
+            binding.attachmentImageView.visibility(isVisible = !isPipMode())
         }
     }
 
