@@ -32,7 +32,7 @@ internal class ParticipantViewHolder(private val thumb: ParticipantThumbView) :
                 localParticipantIdentity else participantViewState.identity
             setIdentity(identity)
             setMuted(participantViewState.isMuted)
-
+            setMirror(participantViewState.isMirrored)
             updateVideoTrack(participantViewState)
 
             networkQualityLevelImg?.let {
