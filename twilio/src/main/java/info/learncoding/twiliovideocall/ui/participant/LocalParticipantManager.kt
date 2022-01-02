@@ -64,11 +64,16 @@ class LocalParticipantManager(
     }
 
     fun enableLocalVideo() {
-        cameraVideoTrack?.enable(true)
+        if (isVideoMuted) {
+            isVideoMuted = false
+            setupLocalVideoTrack()
+        }
     }
 
     fun disableLocalVideo() {
-        cameraVideoTrack?.enable(false)
+        if (isVideoMuted) return
+        isVideoMuted = true
+        removeCameraTrack()
     }
 
     fun publishLocalTracks() {

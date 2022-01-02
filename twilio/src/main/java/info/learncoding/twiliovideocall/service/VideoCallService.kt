@@ -49,6 +49,7 @@ import info.learncoding.twiliovideocall.utils.NotificationHelper.buildCallNotifi
 import info.learncoding.twiliovideocall.utils.NotificationHelper.buildOngoingCallNotification
 import info.learncoding.twiliovideocall.utils.NotificationHelper.isAppForeground
 import info.learncoding.twiliovideocall.utils.NotificationHelper.showNotification
+import info.learncoding.twiliovideocall.utils.visibility
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -198,13 +199,13 @@ class VideoCallService : LifecycleService() {
                     params
                 )
                 isAttachView = true
-                roomManager?.setupLocalTrack(isPermissionsGranted())
             } else {
                 //TODO request for permission
             }
         } else {
             if (isAttachView) {
                 participantController.removeExistingSink()
+                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -389,6 +390,7 @@ class VideoCallService : LifecycleService() {
         videoCallFloatingViewBinding.closeImageView.setOnClickListener {
             if (isAttachView) {
                 participantController.removeExistingSink()
+                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -408,6 +410,7 @@ class VideoCallService : LifecycleService() {
     private fun expandFullScreen() {
         if (isAttachView) {
             participantController.removeExistingSink()
+            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
             startActivity(Intent(this, OnGoingCallActivity::class.java).apply {
@@ -460,8 +463,8 @@ class VideoCallService : LifecycleService() {
     private fun showConnectingViewState() {
         videoCallFloatingViewBinding.statusTextView.text =
             getString(R.string.twilio_call_state_connecting)
-        videoCallFloatingViewBinding.endCallImageView.visibility = View.GONE
-        videoCallFloatingViewBinding.answerCallImageView.visibility = View.GONE
+        videoCallFloatingViewBinding.endCallImageView.visibility(true)
+        videoCallFloatingViewBinding.answerCallImageView.visibility(false)
     }
 
     private fun showReconnectingViewState() {
@@ -510,6 +513,7 @@ class VideoCallService : LifecycleService() {
         clearResource()
         if (isAttachView) {
             participantController.removeExistingSink()
+            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
         }

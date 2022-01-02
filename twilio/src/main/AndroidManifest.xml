@@ -21,9 +21,9 @@
 
     <application>
         <activity
-            android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:name=".ui.attachment.AttachmentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity
             android:name=".ui.call.OnGoingCallActivity"
             android:autoRemoveFromRecents="true"
