@@ -203,9 +203,10 @@ class VideoCallService : LifecycleService() {
                 //TODO request for permission
             }
         } else {
+            Log.d(TAG, "isUiOnServiceUi: $isAttachView")
             if (isAttachView) {
                 participantController.removeExistingSink()
-                roomManager?.disableLocalVideo()
+//TODO                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -390,7 +391,7 @@ class VideoCallService : LifecycleService() {
         videoCallFloatingViewBinding.closeImageView.setOnClickListener {
             if (isAttachView) {
                 participantController.removeExistingSink()
-                roomManager?.disableLocalVideo()
+//TODO                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -410,7 +411,7 @@ class VideoCallService : LifecycleService() {
     private fun expandFullScreen() {
         if (isAttachView) {
             participantController.removeExistingSink()
-            roomManager?.disableLocalVideo()
+//TODO            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
             startActivity(Intent(this, OnGoingCallActivity::class.java).apply {
@@ -513,7 +514,7 @@ class VideoCallService : LifecycleService() {
         clearResource()
         if (isAttachView) {
             participantController.removeExistingSink()
-            roomManager?.disableLocalVideo()
+//TODO            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
         }

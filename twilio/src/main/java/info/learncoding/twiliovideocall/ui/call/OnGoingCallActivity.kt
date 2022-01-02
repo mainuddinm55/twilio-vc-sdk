@@ -2,7 +2,6 @@ package info.learncoding.twiliovideocall.ui.call
 
 import android.Manifest
 import android.app.*
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -26,26 +25,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.twilio.audioswitch.AudioDevice
-import com.twilio.video.Room
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.R
+import info.learncoding.twiliovideocall.TwilioSdk
 import info.learncoding.twiliovideocall.data.model.CallOptions
 import info.learncoding.twiliovideocall.databinding.TwilioActivityOnGoingCallBinding
 import info.learncoding.twiliovideocall.di.RoomEntryPoint
 import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
+import info.learncoding.twiliovideocall.ui.attachment.AttachmentActivity
+import info.learncoding.twiliovideocall.ui.audio.AudioDevicesBottomSheetFragment
 import info.learncoding.twiliovideocall.ui.participant.ParticipantAdapter
 import info.learncoding.twiliovideocall.ui.participant.ParticipantViewState
 import info.learncoding.twiliovideocall.ui.participant.PrimaryParticipantController
 import info.learncoding.twiliovideocall.ui.room.*
 import info.learncoding.twiliovideocall.utils.NotificationHelper.getNotificationFlag
-import info.learncoding.twiliovideocall.TwilioSdk
-import info.learncoding.twiliovideocall.ui.attachment.AttachmentActivity
-import info.learncoding.twiliovideocall.ui.audio.AudioDevicesBottomSheetFragment
 import info.learncoding.twiliovideocall.utils.visibility
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 private const val PERMISSIONS_REQUEST_CODE = 2323
 private const val TAG = "OnGoingCallActivity"
@@ -160,9 +157,7 @@ class OnGoingCallActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            val recordAudioPermissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-            val cameraPermissionGranted = grantResults[1] == PackageManager.PERMISSION_GRANTED
-            if (recordAudioPermissionGranted && cameraPermissionGranted) {
+            if (isAllPermissionGrant(grantResults)) {
                 viewModel.processInput(RoomActionEvent.Setup(true))
             } else {
                 MaterialAlertDialogBuilder(this).apply {
@@ -184,6 +179,17 @@ class OnGoingCallActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun isAllPermissionGrant(grantResults: IntArray): Boolean {
+        var isGrant = true
+        for (result in grantResults) {
+            isGrant = result == PackageManager.PERMISSION_GRANTED
+            if (!isGrant) {
+                break
+            }
+        }
+        return isGrant
     }
 
     override fun onPause() {
@@ -225,17 +231,11 @@ class OnGoingCallActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart: ")
         if (isPermissionsGranted()) {
             viewModel.processInput(RoomActionEvent.Setup(true))
         } else {
             requestPermissions()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (isPermissionsGranted()) {
-            viewModel.processInput(RoomActionEvent.VideoEnabled)
         }
     }
 
@@ -619,7 +619,7 @@ class OnGoingCallActivity : AppCompatActivity() {
 
     private fun showFloatingWidget() {
         primaryParticipantController.removeExistingSink()
-        viewModel.processInput(RoomActionEvent.VideoDisabled)
+//TODO        viewModel.processInput(RoomActionEvent.VideoDisabled)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (drawingPermissionGranted()) {
                 viewModel.showFloatingWidget()

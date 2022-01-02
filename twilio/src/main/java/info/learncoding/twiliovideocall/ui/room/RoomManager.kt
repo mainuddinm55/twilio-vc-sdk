@@ -104,6 +104,7 @@ class RoomManager constructor(
 
     fun disconnect(isReject: Boolean = false, isMissedCall: Boolean = false) {
         room?.disconnect()
+        roomScope.cancel()
         releaseLocalTrack()
         participantManager.clearRemoteParticipants()
         updateParticipantViewState()

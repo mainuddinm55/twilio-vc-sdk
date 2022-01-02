@@ -18,15 +18,19 @@ class RoomViewModel constructor(
     val callState = roomManager.callState
     val viewState = roomManager.viewState
     val duration = RoomManager.duration
+    private var isSetup = false
 
     fun processInput(viewEvent: RoomActionEvent) {
         Log.d(TAG, "View Event: $viewEvent")
 
         when (viewEvent) {
             is RoomActionEvent.Setup -> {
-                roomManager.setupLocalTrack(viewEvent.isPermissionGranted)
+                if (!isSetup) {
+                    roomManager.setupLocalTrack(viewEvent.isPermissionGranted)
+                    isSetup = true
+                }
                 roomManager.updateServiceUiState(false)
-                roomManager.enableLocalVideo()
+//TODO                roomManager.enableLocalVideo()
             }
             is RoomActionEvent.SwitchAudioDevice -> {
                 roomManager.selectDevice(viewEvent.device)
