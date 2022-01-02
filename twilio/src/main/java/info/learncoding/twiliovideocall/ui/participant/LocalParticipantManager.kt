@@ -63,6 +63,14 @@ class LocalParticipantManager(
         }
     }
 
+    fun enableLocalVideo() {
+        cameraVideoTrack?.enable(true)
+    }
+
+    fun disableLocalVideo() {
+        cameraVideoTrack?.enable(false)
+    }
+
     fun publishLocalTracks() {
         publishAudioTrack(localAudioTrack)
         publishCameraTrack(cameraVideoTrack)

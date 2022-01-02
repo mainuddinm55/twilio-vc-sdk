@@ -192,7 +192,7 @@ class VideoCallService : LifecycleService() {
             }
 
             if (!permissionDenied && !isAttachView) {
-
+                roomManager?.enableLocalVideo()
                 windowManager.addView(
                     videoCallFloatingViewBinding.participantBackground,
                     params
@@ -204,6 +204,7 @@ class VideoCallService : LifecycleService() {
             }
         } else {
             if (isAttachView) {
+                participantController.removeExistingSink()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -387,6 +388,7 @@ class VideoCallService : LifecycleService() {
         }
         videoCallFloatingViewBinding.closeImageView.setOnClickListener {
             if (isAttachView) {
+                participantController.removeExistingSink()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -405,6 +407,7 @@ class VideoCallService : LifecycleService() {
 
     private fun expandFullScreen() {
         if (isAttachView) {
+            participantController.removeExistingSink()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
             startActivity(Intent(this, OnGoingCallActivity::class.java).apply {
@@ -504,11 +507,13 @@ class VideoCallService : LifecycleService() {
         roomManager?.callState?.removeObserver(uiStateObserver)
         roomManager?.viewState?.removeObserver(viewStateObserver)
         roomManager?.isUiOnService?.removeObserver(isUiOnServiceObserver)
-        roomManager?.room?.disconnect()
         clearResource()
         if (isAttachView) {
+            participantController.removeExistingSink()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
+            isAttachView = false
         }
+        roomManager?.room?.disconnect()
         roomManagerProvider.destroyScope()
         //wakeLock?.release()
         unregisterCallbackReceiver()

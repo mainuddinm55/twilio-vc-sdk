@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.twilio.audioswitch.AudioDevice
+import com.twilio.video.Room
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.R
@@ -610,6 +611,8 @@ class OnGoingCallActivity : AppCompatActivity() {
     }
 
     private fun showFloatingWidget() {
+        primaryParticipantController.removeExistingSink()
+        viewModel.processInput(RoomActionEvent.VideoDisabled)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (drawingPermissionGranted()) {
                 viewModel.showFloatingWidget()

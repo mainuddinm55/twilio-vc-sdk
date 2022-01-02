@@ -26,7 +26,7 @@ class RoomViewModel constructor(
             is RoomActionEvent.Setup -> {
                 roomManager.setupLocalTrack(viewEvent.isPermissionGranted)
                 roomManager.updateServiceUiState(false)
-
+                roomManager.enableLocalVideo()
             }
             is RoomActionEvent.SwitchAudioDevice -> {
                 roomManager.selectDevice(viewEvent.device)
@@ -41,6 +41,8 @@ class RoomViewModel constructor(
                 roomManager.updateParticipantVideoTrack(viewEvent.sid, null)
             }
             is RoomActionEvent.Disconnect -> roomManager.disconnect(viewEvent.isReject)
+            RoomActionEvent.VideoDisabled -> roomManager.disableLocalVideo()
+            RoomActionEvent.VideoEnabled -> roomManager.enableLocalVideo()
         }
     }
 

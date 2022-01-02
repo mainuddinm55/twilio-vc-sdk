@@ -232,6 +232,14 @@ class RoomManager constructor(
         localParticipantManager.releaseLocalTrack()
     }
 
+     fun enableLocalVideo() {
+        localParticipantManager.enableLocalVideo()
+    }
+
+     fun disableLocalVideo() {
+        localParticipantManager.disableLocalVideo()
+    }
+
     fun toggleLocalVideo() {
         localParticipantManager.toggleLocalVideo()
         broadcastCallingData(

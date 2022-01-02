@@ -1,5 +1,6 @@
 package info.learncoding.twiliovideocall.ui.participant
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.twilio.video.NetworkQualityLevel
@@ -69,6 +70,14 @@ internal class PrimaryParticipantController(
     private fun removeSink(videoTrack: VideoTrack?, view: ParticipantView) {
         if (videoTrack == null || !videoTrack.sinks.contains(view.videoTextureView)) return
         videoTrack.removeSink(view.videoTextureView)
+    }
+
+    fun removeExistingSink() {
+        Log.d(this::class.java.simpleName, "removeExistingSink: $primaryItem")
+        if (primaryItem != null) {
+            removeSink(primaryItem?.videoTrack, primaryView)
+            primaryItem = null
+        }
     }
 
     internal class Item(
