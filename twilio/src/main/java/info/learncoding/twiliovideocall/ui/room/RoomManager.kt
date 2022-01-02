@@ -89,6 +89,8 @@ class RoomManager constructor(
         handler.removeCallbacks(runnable)
     }
 
+    private var isSetupLocal = false
+
     init {
         // start audio switch, it will silently error if it has already been started
         audioSwitch.start { audioDevices, selectedAudioDevice ->
@@ -219,7 +221,10 @@ class RoomManager constructor(
 
     fun setupLocalTrack(permissionGranted: Boolean) {
         if (permissionGranted) {
-            localParticipantManager.setupLocalTrack()
+            if (!isSetupLocal) {
+                localParticipantManager.setupLocalTrack()
+                isSetupLocal = true
+            }
         }
         updateRoomViewState(
             initialViewState.copy(
@@ -233,11 +238,11 @@ class RoomManager constructor(
         localParticipantManager.releaseLocalTrack()
     }
 
-     fun enableLocalVideo() {
+    fun enableLocalVideo() {
         localParticipantManager.enableLocalVideo()
     }
 
-     fun disableLocalVideo() {
+    fun disableLocalVideo() {
         localParticipantManager.disableLocalVideo()
     }
 

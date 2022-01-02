@@ -18,17 +18,13 @@ class RoomViewModel constructor(
     val callState = roomManager.callState
     val viewState = roomManager.viewState
     val duration = RoomManager.duration
-    private var isSetup = false
 
     fun processInput(viewEvent: RoomActionEvent) {
         Log.d(TAG, "View Event: $viewEvent")
 
         when (viewEvent) {
             is RoomActionEvent.Setup -> {
-                if (!isSetup) {
-                    roomManager.setupLocalTrack(viewEvent.isPermissionGranted)
-                    isSetup = true
-                }
+                roomManager.setupLocalTrack(viewEvent.isPermissionGranted)
                 roomManager.updateServiceUiState(false)
 //TODO                roomManager.enableLocalVideo()
             }
