@@ -6,8 +6,6 @@ import info.learncoding.twiliovideocall.data.model.CallOptions
 sealed class RoomActionEvent {
     data class Setup(val isPermissionGranted: Boolean = false) : RoomActionEvent()
     object ToggleLocalVideo : RoomActionEvent()
-    object VideoDisabled : RoomActionEvent()
-    object VideoEnabled : RoomActionEvent()
     object ToggleLocalAudio : RoomActionEvent()
     object SwitchCamera : RoomActionEvent()
     data class SwitchAudioDevice(val device: AudioDevice) : RoomActionEvent()

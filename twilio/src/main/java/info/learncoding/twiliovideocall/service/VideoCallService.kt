@@ -193,12 +193,14 @@ class VideoCallService : LifecycleService() {
             }
 
             if (!permissionDenied && !isAttachView) {
-                roomManager?.enableLocalVideo()
                 windowManager.addView(
                     videoCallFloatingViewBinding.participantBackground,
                     params
                 )
                 isAttachView = true
+                roomManager?.viewState?.value?.let { viewState ->
+                    renderPrimaryView(viewState.primaryParticipant)
+                }
             } else {
                 //TODO request for permission
             }
@@ -206,7 +208,6 @@ class VideoCallService : LifecycleService() {
             Log.d(TAG, "isUiOnServiceUi: $isAttachView")
             if (isAttachView) {
                 participantController.removeExistingSink()
-//TODO                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -391,7 +392,6 @@ class VideoCallService : LifecycleService() {
         videoCallFloatingViewBinding.closeImageView.setOnClickListener {
             if (isAttachView) {
                 participantController.removeExistingSink()
-//TODO                roomManager?.disableLocalVideo()
                 windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
                 isAttachView = false
             }
@@ -411,7 +411,6 @@ class VideoCallService : LifecycleService() {
     private fun expandFullScreen() {
         if (isAttachView) {
             participantController.removeExistingSink()
-//TODO            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
             startActivity(Intent(this, OnGoingCallActivity::class.java).apply {
@@ -514,7 +513,6 @@ class VideoCallService : LifecycleService() {
         clearResource()
         if (isAttachView) {
             participantController.removeExistingSink()
-//TODO            roomManager?.disableLocalVideo()
             windowManager.removeView(videoCallFloatingViewBinding.participantBackground)
             isAttachView = false
         }

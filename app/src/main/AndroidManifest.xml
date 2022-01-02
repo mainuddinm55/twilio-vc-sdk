@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.learncoding.twiliosdk">
 
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <application
         android:name=".TwilioSdkApp"
         android:allowBackup="true"

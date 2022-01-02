@@ -67,7 +67,14 @@ class OnGoingCallActivity : AppCompatActivity() {
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-//        showFloatingWidget()
+        if (it.resultCode == RESULT_OK) {
+            requestPermissions()
+        }
+    }
+    private val widgetPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        showFloatingWidget()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,15 +170,15 @@ class OnGoingCallActivity : AppCompatActivity() {
                 MaterialAlertDialogBuilder(this).apply {
                     setTitle(getString(R.string.twilio_need_permissions))
                     setMessage(getString(R.string.twilio_permission_need_desc))
-                        .setPositiveButton(R.string.twilio_goto_settings) { dialog, i ->
+                        .setPositiveButton(R.string.twilio_goto_settings) { dialog, _ ->
                             dialog.dismiss()
-                            startActivityForResult(
+                            permissionLauncher.launch(
                                 Intent(
                                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                     Uri.parse("package:$packageName")
                                 ),
-                                PERMISSIONS_REQUEST_CODE
                             )
+
                         }
                     setCancelable(false)
                 }.also {
@@ -422,22 +429,9 @@ class OnGoingCallActivity : AppCompatActivity() {
             }
             is CallState.Disconnected -> {
                 toggleAudioDevice(false)
-                Toast.makeText(
-                    this,
-                    if (callState.isReject)
-                        getString(R.string.twilio_call_state_reject)
-                    else
-                        getText(R.string.twilio_call_state_end),
-                    Toast.LENGTH_SHORT
-                ).show()
                 finish()
             }
             is CallState.ConnectionFailed -> {
-                Toast.makeText(
-                    this,
-                    callState.msg,
-                    Toast.LENGTH_SHORT
-                ).show()
                 toggleAudioDevice(false)
                 finish()
             }
@@ -619,7 +613,6 @@ class OnGoingCallActivity : AppCompatActivity() {
 
     private fun showFloatingWidget() {
         primaryParticipantController.removeExistingSink()
-//TODO        viewModel.processInput(RoomActionEvent.VideoDisabled)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (drawingPermissionGranted()) {
                 viewModel.showFloatingWidget()
@@ -642,7 +635,7 @@ class OnGoingCallActivity : AppCompatActivity() {
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
             Uri.parse("package:$packageName")
         )
-        permissionLauncher.launch(intent)
+        widgetPermissionLauncher.launch(intent)
     }
 
 }
