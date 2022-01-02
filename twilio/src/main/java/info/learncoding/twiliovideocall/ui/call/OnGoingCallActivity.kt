@@ -232,6 +232,13 @@ class OnGoingCallActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isPermissionsGranted()) {
+            viewModel.processInput(RoomActionEvent.VideoEnabled)
+        }
+    }
+
     override fun onBackPressed() {
         if (isPipEnabled()) {
             onUserLeaveHint()
