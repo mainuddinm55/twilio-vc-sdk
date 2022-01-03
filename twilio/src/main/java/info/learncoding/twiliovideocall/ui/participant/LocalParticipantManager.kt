@@ -23,6 +23,7 @@ class LocalParticipantManager(
     private var cameraVideoTrack: LocalVideoTrack? = null
         set(value) {
             field = value
+            Log.d(TAG, "cameraVideoTrack: isFrontCamera: ${cameraCapturer?.isFrontCamera()}")
             roomManager.updateLocalVideoTrack(value, cameraCapturer?.isFrontCamera() == true)
         }
     private var cameraCapturer: CameraCapturerCompat? = null
@@ -78,7 +79,11 @@ class LocalParticipantManager(
 
     fun switchCamera() {
         cameraCapturer?.switchCamera()
-        roomManager.updateLocalParticipantMirror(cameraCapturer?.isFrontCamera() == true)
+        Log.d(TAG, "switchCamera:isFrontCamera: ${cameraCapturer?.isFrontCamera()}")
+        roomManager.updateLocalVideoTrack(
+            cameraVideoTrack,
+            cameraCapturer?.isFrontCamera() == false
+        )
     }
 
     private fun setupLocalAudioTrack() {

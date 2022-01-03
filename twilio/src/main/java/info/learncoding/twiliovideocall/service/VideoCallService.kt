@@ -432,7 +432,10 @@ class VideoCallService : LifecycleService() {
 
                 override fun onFinish() {
                     //Timber.d("Timer finish")
-                    roomManager?.disconnect()
+                    roomManager?.disconnect(
+                        false,
+                        callOptions?.userType == UserType.CALLER && roomManager?.isCallConnected() == false
+                    )
                 }
             }.start()
             Log.d(TAG, "startCallingTimer: before start")
