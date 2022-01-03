@@ -271,6 +271,7 @@ class VideoCallService : LifecycleService() {
         manageWakeLock()
         val callOptionJson = intent?.getStringExtra(EXTRA_CALL_OPTIONS)
         callOptions = Gson().fromJson(callOptionJson, CallOptions::class.java)
+        registerCallbackReceiver()
         callOptions?.let { callOptions ->
             startForeground(
                 NOTIFICATION_ID, buildCallNotification(
@@ -319,7 +320,6 @@ class VideoCallService : LifecycleService() {
         roomManager?.isUiOnService?.observe(this, isUiOnServiceObserver)
         roomManager?.callState?.observe(this, uiStateObserver)
         roomManager?.viewState?.observe(this, viewStateObserver)
-        registerCallbackReceiver()
         return super.onStartCommand(intent, flags, startId)
     }
 
