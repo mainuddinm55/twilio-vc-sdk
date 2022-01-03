@@ -403,7 +403,10 @@ class VideoCallService : LifecycleService() {
             }
         }
         videoCallFloatingViewBinding.endCallImageView.setOnClickListener {
-            roomManager?.disconnect()
+            roomManager?.disconnect(
+                callOptions?.userType == UserType.RECEIVER && roomManager?.room == null,
+                callOptions?.userType == UserType.CALLER && roomManager?.isCallConnected() == false
+            )
             clearResource()
         }
     }
@@ -421,7 +424,7 @@ class VideoCallService : LifecycleService() {
 
     private fun startCallingTimer() {
         if (countDownTimer == null) {
-            ringingTimestamp = 55000
+            ringingTimestamp = if (callOptions?.userType == UserType.CALLER) 60000 else 55000
             countDownTimer = object : CountDownTimer(ringingTimestamp, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     ringingTimestamp = millisUntilFinished

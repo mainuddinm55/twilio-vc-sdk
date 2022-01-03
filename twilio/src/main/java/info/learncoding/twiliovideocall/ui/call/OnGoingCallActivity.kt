@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import info.learncoding.twiliovideocall.R
 import info.learncoding.twiliovideocall.TwilioSdk
 import info.learncoding.twiliovideocall.data.model.CallOptions
+import info.learncoding.twiliovideocall.data.model.UserType
 import info.learncoding.twiliovideocall.databinding.TwilioActivityOnGoingCallBinding
 import info.learncoding.twiliovideocall.di.RoomEntryPoint
 import info.learncoding.twiliovideocall.receiver.VideoCallReceiver
@@ -118,7 +119,12 @@ class OnGoingCallActivity : AppCompatActivity() {
         }
 
         binding.endCallImageView.setOnClickListener {
-            viewModel.processInput(RoomActionEvent.Disconnect(roomManager?.room == null))
+            viewModel.processInput(
+                RoomActionEvent.Disconnect(
+                    callOptions?.userType == UserType.RECEIVER && roomManager?.room == null,
+                    callOptions?.userType == UserType.CALLER && roomManager?.isCallConnected() == false
+                )
+            )
         }
 
         binding.videoControllerImageView.setOnClickListener {

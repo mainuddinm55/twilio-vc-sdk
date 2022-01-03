@@ -35,7 +35,7 @@ class VideoCallReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d(TAG, "onReceive: ${intent?.extras}")
+        Log.d(TAG, "onReceive: ${intent?.getStringExtra(TwilioSdk.EXTRA_TYPE)}")
         provider.roomComponent?.let { roomComponent ->
             EntryPoints.get(
                 roomComponent, RoomEntryPoint::class.java

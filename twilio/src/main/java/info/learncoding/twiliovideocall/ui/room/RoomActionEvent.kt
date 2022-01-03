@@ -11,5 +11,7 @@ sealed class RoomActionEvent {
     data class SwitchAudioDevice(val device: AudioDevice) : RoomActionEvent()
     data class Connect(val callOptions: CallOptions) : RoomActionEvent()
     data class VideoTrackRemoved(val sid: String) : RoomActionEvent()
-    data class Disconnect(val isReject: Boolean = false) : RoomActionEvent()
+    data class Disconnect(
+        val isReject: Boolean = false, val isMissedCall: Boolean = false
+    ) : RoomActionEvent()
 }

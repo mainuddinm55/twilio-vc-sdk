@@ -569,4 +569,13 @@ class RoomManager constructor(
         } catch (e: Exception) {
         }
     }
+
+    fun isCallConnected(): Boolean {
+        return room?.remoteParticipants?.isNotEmpty() == true
+    }
+
+    fun updateLocalParticipantMirror(frontCamera: Boolean) {
+        participantManager.updateLocalParticipantMirror(frontCamera)
+    }
+
 }

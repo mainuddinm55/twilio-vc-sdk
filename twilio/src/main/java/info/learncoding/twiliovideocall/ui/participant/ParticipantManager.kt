@@ -130,4 +130,10 @@ class ParticipantManager {
         }
     }
 
+    fun updateLocalParticipantMirror(isMirror: Boolean) {
+        mutableParticipants.find { it.isLocalParticipant }?.copy(
+            isMirrored = isMirror
+        )?.let { updateLocalParticipant(it) }
+    }
+
 }

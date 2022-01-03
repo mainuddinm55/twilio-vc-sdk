@@ -76,7 +76,10 @@ class LocalParticipantManager(
         publishCameraTrack(cameraVideoTrack)
     }
 
-    fun switchCamera() = cameraCapturer?.switchCamera()
+    fun switchCamera() {
+        cameraCapturer?.switchCamera()
+        roomManager.updateLocalParticipantMirror(cameraCapturer?.isFrontCamera() == true)
+    }
 
     private fun setupLocalAudioTrack() {
         if (localAudioTrack == null && !isAudioMuted) {
