@@ -34,6 +34,7 @@ object TwilioSdk {
     const val TYPE_ACCEPT = "ACCEPT"
     const val TYPE_END = "END"
     const val TYPE_FAILED = "FAILED"
+    const val TYPE_OUTGOING = "OUTGOING"
     const val TYPE_CONNECTING = "CONNECTING"
     const val TYPE_CONNECTED = "CONNECTED"
     const val TYPE_RECONNECTING = "RECONNECTING"

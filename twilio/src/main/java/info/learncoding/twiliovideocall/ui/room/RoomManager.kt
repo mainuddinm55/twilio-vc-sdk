@@ -323,6 +323,9 @@ class RoomManager constructor(
             Log.i(TAG, "onConnected -> room sid: " + room.sid)
             setupParticipants(room)
             this@RoomManager.room = room
+            if (callOptions?.userType == UserType.CALLER) {
+                broadcastCallback(TwilioSdk.TYPE_OUTGOING)
+            }
 
             hashMapOf<String, String>().apply {
                 put("room", room.name)
