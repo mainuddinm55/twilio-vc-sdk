@@ -286,7 +286,7 @@ class RoomManager constructor(
         val preferedVideoCodec = Vp8Codec()
 
         val preferredAudioCodec = OpusCodec()
-
+        Log.d(TAG, "buildConnectionOption: $token")
         return createConnectOptions(token) {
             roomName(roomName)
             enableInsights(true)
@@ -352,7 +352,7 @@ class RoomManager constructor(
             if (twilioException != null) {
                 val exceptionInfo = hashMapOf<String, String>()
                 exceptionInfo["code"] = twilioException.code.toString()
-                exceptionInfo["message"] = twilioException.explanation.toString()
+                exceptionInfo["message"] = twilioException.message.toString()
                 exceptionInfo["method"] = "onDisconnected"
                 broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
             }
@@ -365,13 +365,13 @@ class RoomManager constructor(
             )
             sendCallState(
                 CallState.ConnectionFailed(
-                    twilioException.explanation ?: "Something went wrong"
+                    twilioException.message ?: "Something went wrong"
                 )
             )
-            broadcastCallback(TwilioSdk.TYPE_FAILED, twilioException.explanation)
+            broadcastCallback(TwilioSdk.TYPE_FAILED, twilioException.message)
             val exceptionInfo = hashMapOf<String, String>()
             exceptionInfo["code"] = twilioException.code.toString()
-            exceptionInfo["message"] = twilioException.explanation.toString()
+            exceptionInfo["message"] = twilioException.message.toString()
             exceptionInfo["method"] = "onConnectFailure"
             broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
         }
@@ -430,13 +430,13 @@ class RoomManager constructor(
             broadcastCallback(TwilioSdk.TYPE_RECONNECTING)
             val dropInfo = hashMapOf<String, String>()
             dropInfo["is_drop"] = "true"
-            dropInfo["message"] = twilioException.explanation.toString()
-            dropInfo["code"] = twilioException.getCode().toString()
+            dropInfo["message"] = twilioException.message.toString()
+            dropInfo["code"] = twilioException.code.toString()
             broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_DROP, dropInfo)
 
             val exceptionInfo = hashMapOf<String, String>()
             exceptionInfo["code"] = twilioException.code.toString()
-            exceptionInfo["message"] = twilioException.explanation.toString()
+            exceptionInfo["message"] = twilioException.message.toString()
             exceptionInfo["method"] = "onReconnecting"
             broadcastCallingData(TwilioSdk.KEY_VIDEO_CALL_TWILIO_EXCEPTION, exceptionInfo)
         }

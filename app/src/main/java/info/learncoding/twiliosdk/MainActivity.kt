@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             VideoCallService.startService(
                 this,
                 CallOptions(
-                    "$baseUrl/$room/$caller",
+                    "$baseUrl?room=$room&identity=$caller",
                     room,
                     caller,
                     null,
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             VideoCallService.startService(
                 this,
                 CallOptions(
-                    "$baseUrl/$room/$receiver",
+                    "$baseUrl?room=$room&identity=$receiver",
                     room,
                     receiver,
                     null,
