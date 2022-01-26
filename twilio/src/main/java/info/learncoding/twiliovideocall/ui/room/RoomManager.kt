@@ -548,7 +548,7 @@ class RoomManager constructor(
     private fun broadcastCallingData(key: String, data: HashMap<String, String>) {
         try {
             data["timestamp"] = System.currentTimeMillis().toString()
-            data["data"] = Date().toString()
+            data["date"] = Date().toString()
             data["calling_state"] = callState.value?.javaClass?.simpleName?.toString() ?: ""
             Log.d(TAG, "broadcastCallingData: $data")
             Intent(TwilioSdk.ACTION_CALL_DATA).apply {
@@ -557,7 +557,9 @@ class RoomManager constructor(
                     putExtra(entry.key, entry.value)
                 }
                 callOptions?.serializeToMap()?.forEach {
-                    putExtra(it.key, it.value.toString())
+                    if (it.key != "action_data") {
+                        putExtra(it.key, it.value.toString())
+                    }
                 }
                 initialViewState.serializeToMap().forEach {
                     putExtra(it.key, it.value.toString())
