@@ -3,19 +3,63 @@
 Twilio Video SDK is custom SDK for integrating Twilio E2E Video Call feature with
 managing [foreground service](https://developer.android.com/guide/components/foreground-services)
 
+# Feature
+
+This Video SDK contain all feature that:
+
+1. Handle Incoming Call notification for Android 10+
+2. Pip mode for Android Oreo and above while leaving call screen
+3. Floating widget for below android oreo while leaving call screen
+4. Handle multiple audio device switch
+5. Switching camera easy and smooth way
+6. Control audio & video turn off and on
+7. Showing participant audio, video and network state
+8. Showing image attachment during ongoing call.
+
+# Using Technology
+
+1. Twilio Video [SDK](https://www.twilio.com/docs/video)
+2. Twilio [Audio Switch](https://github.com/twilio/audioswitch)
+3. [ViewModel](https://developer.android.com/topic/libraries/architecture/livedata)
+   & [LiveData](https://developer.android.com/topic/libraries/architecture/viewmodel) for lifecycle aware
+4. [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for Dependency Injection
+
 # Install
 
 <hr>
 
-To install twilio sdk on you android project add this `implementation` on you `build.gradle` file
+First add `hilt` dependency on your project with follow
+this [guideline](https://developer.android.com/training/dependency-injection/hilt-android)
+
+To install twilio sdk on you android project add this `implementation` on you `app/build.gradle` file
 
 ```
 implementation 'com.github.mainuddinm55:twilio-vc-sdk:1.0.15'
 ```
 
+then, add this config on your `app/build.gradle` inside `android` config
+
+```
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+```
+
 # Usages
 
-<hr>
+First initialize sdk with `TwilioSdk.init(context)` on your application class
+
+```
+@HiltAndroidApp
+class YourApp :Application() {
+    override fun onCreate() {
+        super.onCreate()
+        TwilioSdk.initSdk(this)
+    }
+}
+```
+
+then, start service from your activity or notification service class to start call.
 
 ```
  

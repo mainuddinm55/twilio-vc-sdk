@@ -73,7 +73,7 @@ afterEvaluate {
             // Creates a Maven publication called "release".
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.anupdey99'
+                groupId = 'com.github.mainuddinm55'
                 artifactId = 'twilio-sdk'
                 version = '1.0.0'
             }
