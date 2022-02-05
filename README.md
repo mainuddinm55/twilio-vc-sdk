@@ -26,15 +26,13 @@ This Video SDK contain all feature that:
 
 # Install
 
-<hr>
-
 First add `hilt` dependency on your project with follow
 this [guideline](https://developer.android.com/training/dependency-injection/hilt-android)
 
 To install twilio sdk on you android project add this `implementation` on you `app/build.gradle` file
 
 ```
-implementation 'com.github.mainuddinm55:twilio-vc-sdk:1.0.15'
+implementation 'com.github.mainuddinm55:twilio-vc-sdk:1.0.16'
 ```
 
 then, add this config on your `app/build.gradle` inside `android` config
@@ -196,4 +194,10 @@ Handled type are:
 
 # Preview
 
-<hr>
+Incoming                   |  Outgoing
+:-------------------------:|:-------------------------:
+![](./images/incoming.png) |  ![](./images/outgoing.png)
+Switch Audio               |  Control Audio & Video
+![](./images/audio.png)    |  ![](./images/control_audio_video.png)
+Picture in Picture Mode    |  Floating Widget
+![](./images/pip.png)      |  ![](./images/floating_widget.png)

@@ -137,7 +137,7 @@ object NotificationHelper {
                         INCOMING_NOTIFICATION_CHANNEL_ID
                     ).setSmallIcon(R.drawable.twilio_ic_videocam_black_24dp)
                         .setContentTitle("Incoming call")
-                        .setContentText("Maya Expert Calling")
+                        .setContentText("${callOptions?.remoteIdentity ?: "Someone"} Calling")
                         .setContentIntent(fullScreenPendingIntent)
                         .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -165,33 +165,34 @@ object NotificationHelper {
             } else {
                 return buildOngoingCallNotification(context, false)
             }
-        } else {
-            return buildOngoingCallNotification(context, false)
-        }
+        } else
+    {
+        return buildOngoingCallNotification(context, false)
     }
+}
 
-    fun getNotificationFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-        PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+fun getNotificationFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
 
-    fun isAppForeground(context: Context) = !isAppBackground(context)
-    private fun isAppBackground(context: Context): Boolean {
-        var isInBackground = true
-        val am = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        try {
-            val runningProcesses = am.runningAppProcesses
-            if (runningProcesses != null) {
-                for (processInfo: ActivityManager.RunningAppProcessInfo in runningProcesses) {
-                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                        for (activeProcess: String in processInfo.pkgList) {
-                            if ((activeProcess == context.packageName)) {
-                                isInBackground = false
-                            }
+fun isAppForeground(context: Context) = !isAppBackground(context)
+private fun isAppBackground(context: Context): Boolean {
+    var isInBackground = true
+    val am = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+    try {
+        val runningProcesses = am.runningAppProcesses
+        if (runningProcesses != null) {
+            for (processInfo: ActivityManager.RunningAppProcessInfo in runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (activeProcess: String in processInfo.pkgList) {
+                        if ((activeProcess == context.packageName)) {
+                            isInBackground = false
                         }
                     }
                 }
             }
-        } catch (ignored: Exception) {
         }
-        return isInBackground
+    } catch (ignored: Exception) {
     }
+    return isInBackground
+}
 }

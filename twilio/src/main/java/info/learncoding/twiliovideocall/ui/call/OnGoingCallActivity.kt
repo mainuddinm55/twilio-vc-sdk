@@ -467,7 +467,8 @@ class OnGoingCallActivity : AppCompatActivity() {
         this.callOptions = callState.callOptions
         binding.answerCallImageView.visibility(true)
         binding.endCallImageView.visibility(true)
-        binding.statusTextView.text = getString(R.string.twilio_maya_expert_calling)
+        binding.statusTextView.text =
+            getString(R.string.twilio_user_calling, callOptions?.remoteIdentity ?: "SomeOne")
         binding.identityNameTextView.text = callState.callOptions.remoteIdentity
     }
 

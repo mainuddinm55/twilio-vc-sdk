@@ -17,7 +17,7 @@
     <string name="twilio_call_state_ringing">Ringing</string>
 
     <string name="twilio_ongoing_call_notification_title">Ongoing Video Call</string>
-    <string name="twilio_maya_expert_calling">Maya Expert Calling</string>
+    <string name="twilio_user_calling">%s Calling</string>
 
     <string name="twilio_need_permissions">Need Permissions</string>
     <string name="twilio_permission_need_desc">You need to enable Camera and Microphone access permissions to use the Video calling feature. Please grant the permissions from App\'s settings and navigate back to the app</string>
