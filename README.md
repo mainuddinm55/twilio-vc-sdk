@@ -29,6 +29,17 @@ This Video SDK contain all feature that:
 First add `hilt` dependency on your project with follow
 this [guideline](https://developer.android.com/training/dependency-injection/hilt-android)
 
+Add it in your root `build.gradle` at the end of repositories:
+
+```
+allprojects {
+     repositories {
+         ...
+         maven { url 'https://jitpack.io' }
+     }
+ }
+```
+
 To install twilio sdk on you android project add this `implementation` on you `app/build.gradle` file
 
 ```
